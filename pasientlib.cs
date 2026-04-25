@@ -1,11 +1,11 @@
 ﻿using System;
 
-public class Bruker
+public class User
 {
 	private string Username {get; set;}
 	private string Password {get; set;}
 	private bool IsTeacher {get; set;}
-	public Bruker(string username, string password, bool isTeacher)
+	public User(string username, string password, bool isTeacher)
 	{
 		_Username = username;
 		_Password = password;
@@ -13,27 +13,50 @@ public class Bruker
 	}
 }
 
-public class Pasient
+public class Patient
 {
-	private string Navn {get; set;}
-	private int Alder {get; set;}
-	private string Kjonn {get; set;}
-	private double Vekt {get; set;}
+	private string Name {get; set;}
+	private int Age {get; set;}
+	private string Gender {get; set;}
+	private double Weight {get; set;}
 	
-	public Pasient(string navn, int alder, string kjonn, double vekt)
+	public Patient(string name, int age, string gender, double weight)
 	{
-		_Navn = navn;
-		_Alder = alder;
-		_Kjonn = kjonn;
-		_Vekt = vekt;
+		_Name = name;
+		_Age = age;
+		_Gender = gender;
+		_Weight = weight;
 	}
 }
 
 public class Vitals
 {
-	private int OverTrykk {get; set;}
-	private int UnderTrykk {get; set;}
+	private int OverPressure {get; set;}
+	private int UnderPressure {get; set;}
 	private int Puls { get; set;}
-	private int Pusterytme {get; set;}
+	private int RespiratoryRate {get; set;}
+	private int OxygenSaturation {get; set;}
+	private double Temperature {get; set;}
+
+	public Vitals(int overPressure, int underPressure, int puls, int respiratoryRate,
+		int oxygenSaturation, double temperature)
+	{
+		_OverPressure = overPressure;
+		_UnderPressure = underPressure;
+		_Puls = puls;
+		_RespiratoryRate = respiratoryRate;
+		_OxygenSaturation = oxygenSaturation;
+		_Temperature = temperature;
+	}
+
+	public string BlodPressure()
+	{
+		return OverPressure + " / " + UnderPressure;
+	}
+
+}
+public class Medication
+{
+	private string Name { get; set;}
 
 }
