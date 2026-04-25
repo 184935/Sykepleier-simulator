@@ -55,8 +55,72 @@ public class Vitals
 	}
 
 }
+public class MedicalHistory
+{
+	private List<string> History { get; set;}
+
+	public MedicalHistory(List<string> history)
+	{
+		_History = history;
+	}
+}
+
+// Litt usikker på denne, fyre inn de fra doc, evt finne på noe selv? 
+public class LabValues
+{
+
+}
+
+public class Diagnosis
+{
+	public string Name {get; set;}
+	public string Description {get; set;}
+	public string Treatment {get; set;}
+
+	public Diagnosis(string name, string description, string treatment)
+	{
+		_Name = name;
+		_Description = description;
+		_Treatment = treatment;
+	}
+}
 public class Medication
 {
 	private string Name { get; set;}
+	private int Dose { get; set;}
+	private string Route { get; set;}
+	private string Frequency { get; set;}
+	private string Notes { get; set;}
+
+	public Medication(string name, int dose, string route,  string frequency,  string notes)
+	{
+		_Name = name;
+		_Dose = dose;
+		_Route = route;
+		_Frequency = frequency;
+		_Notes = notes;
+	}
+
+}
+public class Allergy
+{
+	private string Allergen { get; set;}
+	private string Reaction { get; set;}
+
+	public Allergy(string allergen, string reaction)
+	{
+		_Allergen = allergen;
+		_Reaction = reaction;
+	}
+}
+
+public class Case
+{
+	private Patient Patient { get; set;}
+	private Vitals Vitals { get; set;}
+	private List<Medication> Medications { get; set;}
+	private List<Allergy> Allergies { get; set;}
+	private List<Diagnosis> Diagnoses { get; set;}
+	private MedicalHistory MedicalHistory { get; set;}
 
 }
