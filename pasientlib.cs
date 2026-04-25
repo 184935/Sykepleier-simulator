@@ -16,5 +16,24 @@ public class Bruker
 public class Pasient
 {
 	private string Navn {get; set;}
-	private int Age {get; set;}
+	private int Alder {get; set;}
+	private string Kjonn {get; set;}
+	private double Vekt {get; set;}
+	
+	public Pasient(string navn, int alder, string kjonn, double vekt)
+	{
+		_Navn = navn;
+		_Alder = alder;
+		_Kjonn = kjonn;
+		_Vekt = vekt;
+	}
+}
+
+public class Vitals
+{
+	private int OverTrykk {get; set;}
+	private int UnderTrykk {get; set;}
+	private int Puls { get; set;}
+	private int Pusterytme {get; set;}
+
 }
