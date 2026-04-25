@@ -57,17 +57,36 @@ public class Vitals
 }
 public class MedicalHistory
 {
-	private List<string> History { get; set;}
+	private List<string> MHistory { get; set;}
+	private List<string> SurgicalHistory { get; set;}
+	private List<string> SocialHistory { get; set;}
+	private List<string> FamHistory { get; set;}
 
-	public MedicalHistory(List<string> history)
+	public MedicalHistory(List<string> history, List<string> surgicalHistory, List<string> socialHistory,
+		List<string> famhistory)
 	{
 		_History = history;
+		_SurgicalHistory = surgicalHistory;
+		_SocialHistory = socialHistory;
+		_FamHistory = famhistory;
 	}
 }
 
 // Litt usikker på denne, fyre inn de fra doc, evt finne på noe selv? 
 public class LabValues
 {
+	private double BloodSugar {  get; set; }
+	private int Creatinine {  get; set; }
+	private int Sodium { get; set; }
+	private double Potassium { get; set; }
+	
+	public LabValues(double bloodsugar, int creatinine, int sodium,  double potassium)
+	{
+		_BloodSugar = bloodsugar;
+		_Creatinine = creatinine;
+		_Sodium = sodium;
+		_Potassium = potassium;
+	}
 
 }
 
@@ -116,11 +135,37 @@ public class Allergy
 
 public class Case
 {
+	private int CaseId { get; set;}
 	private Patient Patient { get; set;}
 	private Vitals Vitals { get; set;}
 	private List<Medication> Medications { get; set;}
 	private List<Allergy> Allergies { get; set;}
 	private List<Diagnosis> Diagnoses { get; set;}
 	private MedicalHistory MedicalHistory { get; set;}
+	private bool Editable { get; set;}
+	private List<User> TestUsers { get; set;}
+	private Difficulty Difficulty { get; set;}
 
+	public Case(Patient patient, Vitals vitals, List<Medication> meds, List<Allergy> allergies, 
+		List<Diagnosis> diagnoses, MedicalHistory medHis, bool editable, List<User> testUsers, Difficulty diff)
+	{
+		_Patient = patient;
+		_Vitals = vitals;
+		_Medications = meds;
+		_Allergies = allergies;
+		_Diagnoses = diagnoses;
+		_MedicalHistory = medHis;
+		_Editable = editable;
+		_TestUsers = testUsers;
+		_Difficulty = diff;
+	}
+
+
+
+}
+enum Difficulty
+{
+	Easy,
+	Intermediate,
+	Hard
 }
