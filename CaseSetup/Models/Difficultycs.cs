@@ -1,6 +1,6 @@
 ﻿namespace CaseSetup.Models
 {
-    enum Difficulty
+    public enum Difficulty
     {
         Easy,
         Intermediate,
