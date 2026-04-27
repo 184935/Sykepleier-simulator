@@ -2,7 +2,7 @@
 {
     public class Case
     {
-        private int CaseId { get; set; }
+        private int Id { get; set; }
         private Patient Patient { get; set; }
         private Vitals Vitals { get; set; }
         private List<Medication> Medications { get; set; }

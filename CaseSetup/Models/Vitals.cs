@@ -2,6 +2,7 @@
 {
     public class Vitals
     {
+        private int Id {  get; set; }
         private int OverPressure { get; set; }
         private int UnderPressure { get; set; }
         private int Puls { get; set; }

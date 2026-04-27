@@ -2,6 +2,7 @@
 {
     public class MedicalHistory
     {
+        private int Id { get; set; }
         private List<string> MHistory { get; set; }
         private List<string> SurgicalHistory { get; set; }
         private List<string> SocialHistory { get; set; }

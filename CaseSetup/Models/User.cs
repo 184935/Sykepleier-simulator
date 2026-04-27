@@ -1,7 +1,10 @@
-﻿namespace CaseSetup.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace CaseSetup.Models
 {
     public class User
     {
+        [Key]
         private string Username { get; set; }
         private string Password { get; set; }
         private bool IsTeacher { get; set; }

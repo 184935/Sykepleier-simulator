@@ -1,9 +1,11 @@
 ﻿using Microsoft.AspNetCore.Components.Routing;
+using System.ComponentModel.DataAnnotations;
 
 namespace CaseSetup.Models
 {
     public class Medication
     {
+        [Key]
         private string Name { get; set; }
         private int Dose { get; set; }
         private string Route { get; set; }

@@ -1,7 +1,11 @@
-﻿namespace CaseSetup.Models
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace CaseSetup.Models
 {
     public class LabValues
     {
+        private int Id { get; set; }
+        [Required]
         private double BloodSugar { get; set; }
         private int Creatinine { get; set; }
         private int Sodium { get; set; }
