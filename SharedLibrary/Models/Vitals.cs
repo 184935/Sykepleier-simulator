@@ -5,17 +5,17 @@
         public int Id {  get; set; }
         public int OverPressure { get; set; }
         public int UnderPressure { get; set; }
-        public int Puls { get; set; }
+        public int Pulse { get; set; }
         public int RespiratoryRate { get; set; }
         public int OxygenSaturation { get; set; }
         public double Temperature { get; set; }
 
-        public Vitals(int overPressure, int underPressure, int puls, int respiratoryRate,
+        public Vitals(int overPressure, int underPressure, int pulse, int respiratoryRate,
             int oxygenSaturation, double temperature)
         {
             OverPressure = overPressure;
             UnderPressure = underPressure;
-            Puls = puls;
+            Pulse = pulse;
             RespiratoryRate = respiratoryRate;
             OxygenSaturation = oxygenSaturation;
             Temperature = temperature;

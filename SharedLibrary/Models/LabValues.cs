@@ -11,9 +11,9 @@ namespace SharedLibrary.Models
         public int Sodium { get; set; }
         public double Potassium { get; set; }
 
-        public LabValues(double bloodsugar, int creatinine, int sodium, double potassium)
+        public LabValues(double bloodSugar, int creatinine, int sodium, double potassium)
         {
-            BloodSugar = bloodsugar;
+            BloodSugar = bloodSugar;
             Creatinine = creatinine;
             Sodium = sodium;
             Potassium = potassium;
