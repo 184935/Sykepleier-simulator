@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SharedLibrary.Models
 {
@@ -10,6 +11,9 @@ namespace SharedLibrary.Models
         public string Description { get; set; }
         [Required]
         public string Treatment { get; set; }
+
+        [ForeignKey(nameof(Case))]
+        public int CaseId { get; set; }
 
         public Diagnosis(string name, string description, string treatment)
         {

@@ -3,28 +3,34 @@
     public class Case
     {
         public int Id { get; set; }
-        public Patient Patient { get; set; }
-        public Vitals Vitals { get; set; }
-        public List<Medication> Medications { get; set; }
-        public List<Allergy> Allergies { get; set; }
-        public List<Diagnosis> Diagnoses { get; set; }
-        public MedicalHistory MedicalHistory { get; set; }
-        public bool Editable { get; set; }
-        public List<User> TestUsers { get; set; }
-        public Difficulty Difficulty { get; set; }
 
-        public Case(Patient patient, Vitals vitals, List<Medication> meds, List<Allergy> allergies,
-            List<Diagnosis> diagnoses, MedicalHistory medHis, bool editable, List<User> testUsers, Difficulty diff)
+        public int PatientId { get; set; }
+        
+        public int VitalsId { get; set; }
+
+        public int MedicalHistoryId { get; set; }
+        
+        public virtual List<Medication> Medications { get; set; }
+        public virtual List<Allergy> Allergies { get; set; }
+        public virtual List<Diagnosis> Diagnoses { get; set; }
+        
+        public bool Editable { get; set; }
+        public virtual List<User> TestUsers { get; set; }
+
+        public int DifficultyInt { get; set; }
+        public virtual Difficulty Difficulty { get; set; }
+
+        public virtual Patient Patient { get; set; }
+        public virtual Vitals Vitals { get; set; }
+        public virtual MedicalHistory MedicalHistory { get; set; }
+
+        public Case(int patientId, int vitalsId, int medicalHistoryId, bool editable, int difficultyInt)
         {
-            Patient = patient;
-            Vitals = vitals;
-            Medications = meds;
-            Allergies = allergies;
-            Diagnoses = diagnoses;
-            MedicalHistory = medHis;
+            PatientId = patientId;
+            VitalsId = vitalsId;
+            MedicalHistoryId = medicalHistoryId;
             Editable = editable;
-            TestUsers = testUsers;
-            Difficulty = diff;
+            DifficultyInt = difficultyInt;
         }
     }
 }

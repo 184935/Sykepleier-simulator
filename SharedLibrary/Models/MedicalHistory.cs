@@ -8,13 +8,13 @@
         public List<string> SocialHistory { get; set; }
         public List<string> FamHistory { get; set; }
 
-        public MedicalHistory(List<string> history, List<string> surgicalHistory, List<string> socialHistory,
-            List<string> famhistory)
+        public MedicalHistory(List<string> mHistory, List<string> surgicalHistory, List<string> socialHistory,
+            List<string> famHistory)
         {
-            MHistory = history;
+            MHistory = mHistory;
             SurgicalHistory = surgicalHistory;
             SocialHistory = socialHistory;
-            FamHistory = famhistory;
+            FamHistory = famHistory;
         }
     }
 }

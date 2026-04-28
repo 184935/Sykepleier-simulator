@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SharedLibrary.Models
 {
@@ -11,13 +12,17 @@ namespace SharedLibrary.Models
         public string Frequency { get; set; }
         public string Notes { get; set; }
 
-        public Medication(string name, int dose, string route, string frequency, string notes)
+        [ForeignKey(nameof(Case))]
+        public int CaseId { get; set; }
+
+        public Medication(string name, int dose, string route, string frequency, string notes, int caseId)
         {
             Name = name;
             Dose = dose;
             Route = route;
             Frequency = frequency;
             Notes = notes;
+            CaseId = caseId;
         }
     }
 }

@@ -4,4 +4,5 @@
   </Folder>
   <Project Path="CaseSetup/CaseSetup.csproj" />
   <Project Path="SharedLibrary/SharedLibrary.csproj" Id="21f04ea6-7301-4a17-879c-8ec3fdb87141" />
+  <Project Path="StudSim/StudSim.csproj" />
 </Solution>
