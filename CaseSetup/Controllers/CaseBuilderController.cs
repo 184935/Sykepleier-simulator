@@ -19,6 +19,7 @@ namespace CaseSetup.Controllers
 
         public IActionResult Student()
         {
+             
             return View();
         }
         public IActionResult Teacher()
