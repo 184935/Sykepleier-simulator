@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace CaseSetup.Models
+namespace SharedLibrary.Models
 {
     public class Event
     {

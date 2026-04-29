@@ -9,11 +9,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
 
-namespace CaseSetup.Data.Migrations
+namespace CaseSetup.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260428100235_Initial")]
-    partial class Initial
+    [Migration("20260429140143_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -89,6 +89,11 @@ namespace CaseSetup.Data.Migrations
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Discriminator")
+                        .IsRequired()
+                        .HasMaxLength(13)
+                        .HasColumnType("nvarchar(13)");
+
                     b.Property<string>("Email")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
@@ -140,6 +145,10 @@ namespace CaseSetup.Data.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers", (string)null);
+
+                    b.HasDiscriminator<string>("Discriminator").HasValue("IdentityUser");
+
+                    b.UseTphMappingStrategy();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
@@ -244,7 +253,7 @@ namespace CaseSetup.Data.Migrations
 
                     b.HasIndex("CaseId");
 
-                    b.ToTable("Allergy");
+                    b.ToTable("Allergies");
                 });
 
             modelBuilder.Entity("SharedLibrary.Models.Case", b =>
@@ -307,6 +316,31 @@ namespace CaseSetup.Data.Migrations
                     b.ToTable("Diagnosis");
                 });
 
+            modelBuilder.Entity("SharedLibrary.Models.LabValues", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<double>("BloodSugar")
+                        .HasColumnType("float");
+
+                    b.Property<int>("Creatinine")
+                        .HasColumnType("int");
+
+                    b.Property<double>("Potassium")
+                        .HasColumnType("float");
+
+                    b.Property<int>("Sodium")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("LabValues");
+                });
+
             modelBuilder.Entity("SharedLibrary.Models.MedicalHistory", b =>
                 {
                     b.Property<int>("Id")
@@ -333,7 +367,7 @@ namespace CaseSetup.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("MedicalHistory");
+                    b.ToTable("MedHistory");
                 });
 
             modelBuilder.Entity("SharedLibrary.Models.Medication", b =>
@@ -363,7 +397,7 @@ namespace CaseSetup.Data.Migrations
 
                     b.HasIndex("CaseId");
 
-                    b.ToTable("Medication");
+                    b.ToTable("Medications");
                 });
 
             modelBuilder.Entity("SharedLibrary.Models.Patient", b =>
@@ -390,29 +424,7 @@ namespace CaseSetup.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Patient");
-                });
-
-            modelBuilder.Entity("SharedLibrary.Models.User", b =>
-                {
-                    b.Property<string>("Username")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("CaseId")
-                        .HasColumnType("int");
-
-                    b.Property<bool>("IsTeacher")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("Password")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Username");
-
-                    b.HasIndex("CaseId");
-
-                    b.ToTable("User");
+                    b.ToTable("Patients");
                 });
 
             modelBuilder.Entity("SharedLibrary.Models.Vitals", b =>
@@ -429,7 +441,7 @@ namespace CaseSetup.Data.Migrations
                     b.Property<int>("OxygenSaturation")
                         .HasColumnType("int");
 
-                    b.Property<int>("Puls")
+                    b.Property<int>("Pulse")
                         .HasColumnType("int");
 
                     b.Property<int>("RespiratoryRate")
@@ -444,6 +456,16 @@ namespace CaseSetup.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Vitals");
+                });
+
+            modelBuilder.Entity("CaseSetup.Areas.Identity.Data.User", b =>
+                {
+                    b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
+
+                    b.Property<bool>("IsTeacher")
+                        .HasColumnType("bit");
+
+                    b.HasDiscriminator().HasValue("User");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -551,15 +573,6 @@ namespace CaseSetup.Data.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("SharedLibrary.Models.User", b =>
-                {
-                    b.HasOne("SharedLibrary.Models.Case", null)
-                        .WithMany("TestUsers")
-                        .HasForeignKey("CaseId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("SharedLibrary.Models.Case", b =>
                 {
                     b.Navigation("Allergies");
@@ -567,8 +580,6 @@ namespace CaseSetup.Data.Migrations
                     b.Navigation("Diagnoses");
 
                     b.Navigation("Medications");
-
-                    b.Navigation("TestUsers");
                 });
 #pragma warning restore 612, 618
         }

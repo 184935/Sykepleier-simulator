@@ -8,37 +8,3 @@
 }
 
 [Authorize]
-<form method="post">
-    <select asp-for="" asp-items="Model.Patient">
-        <option value="">-- Velg pasient --</option>
-    </select>
-
-    <select asp-for="" asp-items="Model.Vitals">
-        <option value="">-- Velg vitals --</option>
-    </select>
-
-    <select asp-for="" asp-items="Model.MedicalHistory">
-        <option value="">-- Velg pasients historikk --</option>
-    </select>
-
-    <select asp-for="" asp-items="Model.Diagnosis">
-        <option value="">-- Velg diagnose --</option>
-    </select>
-
-    <select asp-for="" asp-items="Model.Allergy" multiple>
-        <option value="">-- Velg allergier --</option>
-    </select>
-
-    <select asp-for="" asp-items="Model.Medication" multiple>
-        <option value="">-- Velg medisiner --</option>
-    </select>
-
-    <select asp-for="" asp-items="Model.LabValues">
-        <option value="">-- Velg lab verdier --</option>
-    </select>
-
-    <input type="radio" asp-for="" value="@option.Value" /> 
-
-
-    <button type="submit"> Submit </button>
-</form>

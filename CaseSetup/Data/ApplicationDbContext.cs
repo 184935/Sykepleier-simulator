@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using CaseSetup.Areas.Identity.Data;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using SharedLibrary.Models;
 
@@ -14,5 +15,6 @@ namespace CaseSetup.Data
         public DbSet<SharedLibrary.Models.Medication> Medications {  get; set; } = default!;
         public DbSet<SharedLibrary.Models.Patient> Patients {  get; set; } = default!;
         public DbSet<SharedLibrary.Models.Vitals> Vitals {  get; set; } = default!;
+        public DbSet<User> Users {  get; set; } = default!;
     }
 }

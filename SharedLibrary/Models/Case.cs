@@ -1,4 +1,5 @@
-﻿namespace SharedLibrary.Models
+﻿
+namespace SharedLibrary.Models
 {
     public class Case
     {
@@ -15,7 +16,6 @@
         public virtual List<Diagnosis> Diagnoses { get; set; }
         
         public bool Editable { get; set; }
-        public virtual List<User> TestUsers { get; set; }
 
         public int DifficultyInt { get; set; }
         public virtual Difficulty Difficulty { get; set; }
