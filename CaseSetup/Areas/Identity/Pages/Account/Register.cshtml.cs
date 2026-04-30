@@ -119,6 +119,7 @@ namespace CaseSetup.Areas.Identity.Pages.Account
 
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
+                user.IsTeacher = Input.IsTeacher;
                 var result = await _userManager.CreateAsync(user, Input.Password);
 
                 if (result.Succeeded)
@@ -144,7 +145,11 @@ namespace CaseSetup.Areas.Identity.Pages.Account
                     else
                     {
                         await _signInManager.SignInAsync(user, isPersistent: false);
-                        return LocalRedirect(returnUrl);
+                        if (user.IsTeacher)
+                        {
+                            return RedirectToAction("Teacher");
+                        }
+                        return RedirectToAction("Student");
                     }
                 }
                 foreach (var error in result.Errors)
