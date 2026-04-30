@@ -1,18 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Text;
 
 namespace SharedLibrary.Models
 {
-    internal class Goal
+    public class Goal
     {
-        private int ID {  get; set; }
-        private string Name { get; set; }
-        private double Upper {  get; set; }
-        private double Lower { get; set; }
-        private bool Completed { get; set; }
-        private long Time { get; set; }
+        [Key]
+        public int Id {  get; set; }
+        public string Name { get; set; }
+        public double Upper {  get; set; }
+        public double Lower { get; set; }
+        public bool Completed { get; set; }
+        public long Time { get; set; }
 
+        public Goal() { }
         public Goal(string name, double upper, double lower, long time)
         {
             Name = name;

@@ -292,8 +292,11 @@ namespace CaseSetup.Migrations
 
             modelBuilder.Entity("SharedLibrary.Models.Diagnosis", b =>
                 {
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("CaseId")
                         .HasColumnType("int");
@@ -302,15 +305,53 @@ namespace CaseSetup.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Treatment")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Name");
+                    b.HasKey("Id");
 
                     b.HasIndex("CaseId");
 
                     b.ToTable("Diagnosis");
+                });
+
+            modelBuilder.Entity("SharedLibrary.Models.Goal", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int?>("CaseId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("Completed")
+                        .HasColumnType("bit");
+
+                    b.Property<double>("Lower")
+                        .HasColumnType("float");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<long>("Time")
+                        .HasColumnType("bigint");
+
+                    b.Property<double>("Upper")
+                        .HasColumnType("float");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CaseId");
+
+                    b.ToTable("Goal");
                 });
 
             modelBuilder.Entity("SharedLibrary.Models.LabValues", b =>
@@ -369,8 +410,11 @@ namespace CaseSetup.Migrations
 
             modelBuilder.Entity("SharedLibrary.Models.Medication", b =>
                 {
-                    b.Property<string>("Name")
-                        .HasColumnType("nvarchar(450)");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("CaseId")
                         .HasColumnType("int");
@@ -382,6 +426,10 @@ namespace CaseSetup.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Notes")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -390,7 +438,7 @@ namespace CaseSetup.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.HasKey("Name");
+                    b.HasKey("Id");
 
                     b.HasIndex("CaseId");
 
@@ -561,6 +609,13 @@ namespace CaseSetup.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("SharedLibrary.Models.Goal", b =>
+                {
+                    b.HasOne("SharedLibrary.Models.Case", null)
+                        .WithMany("Goals")
+                        .HasForeignKey("CaseId");
+                });
+
             modelBuilder.Entity("SharedLibrary.Models.Medication", b =>
                 {
                     b.HasOne("SharedLibrary.Models.Case", null)
@@ -575,6 +630,8 @@ namespace CaseSetup.Migrations
                     b.Navigation("Allergies");
 
                     b.Navigation("Diagnoses");
+
+                    b.Navigation("Goals");
 
                     b.Navigation("Medications");
                 });

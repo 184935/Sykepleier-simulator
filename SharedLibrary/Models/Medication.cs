@@ -6,6 +6,7 @@ namespace SharedLibrary.Models
     public class Medication
     {
         [Key]
+        public int Id { get; set; }
         public string Name { get; set; }
         public int Dose { get; set; }
         public string Route { get; set; }

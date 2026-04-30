@@ -283,14 +283,16 @@ namespace CaseSetup.Migrations
                 name: "Diagnosis",
                 columns: table => new
                 {
-                    Name = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Treatment = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CaseId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Diagnosis", x => x.Name);
+                    table.PrimaryKey("PK_Diagnosis", x => x.Id);
                     table.ForeignKey(
                         name: "FK_Diagnosis_Case_CaseId",
                         column: x => x.CaseId,
@@ -300,10 +302,35 @@ namespace CaseSetup.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Goal",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Upper = table.Column<double>(type: "float", nullable: false),
+                    Lower = table.Column<double>(type: "float", nullable: false),
+                    Completed = table.Column<bool>(type: "bit", nullable: false),
+                    Time = table.Column<long>(type: "bigint", nullable: false),
+                    CaseId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Goal", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Goal_Case_CaseId",
+                        column: x => x.CaseId,
+                        principalTable: "Case",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Medications",
                 columns: table => new
                 {
-                    Name = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Dose = table.Column<int>(type: "int", nullable: false),
                     Route = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Frequency = table.Column<string>(type: "nvarchar(max)", nullable: false),
@@ -312,7 +339,7 @@ namespace CaseSetup.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Medications", x => x.Name);
+                    table.PrimaryKey("PK_Medications", x => x.Id);
                     table.ForeignKey(
                         name: "FK_Medications_Case_CaseId",
                         column: x => x.CaseId,
@@ -386,6 +413,11 @@ namespace CaseSetup.Migrations
                 column: "CaseId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Goal_CaseId",
+                table: "Goal",
+                column: "CaseId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Medications_CaseId",
                 table: "Medications",
                 column: "CaseId");
@@ -414,6 +446,9 @@ namespace CaseSetup.Migrations
 
             migrationBuilder.DropTable(
                 name: "Diagnosis");
+
+            migrationBuilder.DropTable(
+                name: "Goal");
 
             migrationBuilder.DropTable(
                 name: "LabValues");
