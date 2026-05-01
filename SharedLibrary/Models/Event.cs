@@ -4,11 +4,12 @@ namespace SharedLibrary.Models
 {
     public class Event
     {
-        private int Id {  get; set; }
-        private string Action { get; set; }
+        public int Id {  get; set; }
+        public string Action { get; set; }
         [DataType(DataType.DateTime)]
-        private DateTime Timestamp { get; set; }
+        public DateTime Timestamp { get; set; }
 
+        public Event() { }
         public Event(string action, DateTime timestamp)
         {
             Action = action;

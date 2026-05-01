@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CaseSetup.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260501112433_InitialCreate")]
+    [Migration("20260501124052_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -24,6 +24,31 @@ namespace CaseSetup.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("CaseSetup.Models.Comment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int?>("DebriefId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Text")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("Timestamp")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DebriefId");
+
+                    b.ToTable("Comments");
+                });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
@@ -293,6 +318,22 @@ namespace CaseSetup.Migrations
                     b.ToTable("Cases");
                 });
 
+            modelBuilder.Entity("SharedLibrary.Models.Debrief", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("Timestamp")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Debriefs");
+                });
+
             modelBuilder.Entity("SharedLibrary.Models.Diagnosis", b =>
                 {
                     b.Property<int>("Id")
@@ -321,6 +362,31 @@ namespace CaseSetup.Migrations
                     b.HasIndex("CaseId");
 
                     b.ToTable("Diagnosis");
+                });
+
+            modelBuilder.Entity("SharedLibrary.Models.Event", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Action")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int?>("DebriefId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("Timestamp")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DebriefId");
+
+                    b.ToTable("Events");
                 });
 
             modelBuilder.Entity("SharedLibrary.Models.Goal", b =>
@@ -516,6 +582,13 @@ namespace CaseSetup.Migrations
                     b.HasDiscriminator().HasValue("User");
                 });
 
+            modelBuilder.Entity("CaseSetup.Models.Comment", b =>
+                {
+                    b.HasOne("SharedLibrary.Models.Debrief", null)
+                        .WithMany("Comments")
+                        .HasForeignKey("DebriefId");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -612,6 +685,13 @@ namespace CaseSetup.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("SharedLibrary.Models.Event", b =>
+                {
+                    b.HasOne("SharedLibrary.Models.Debrief", null)
+                        .WithMany("Events")
+                        .HasForeignKey("DebriefId");
+                });
+
             modelBuilder.Entity("SharedLibrary.Models.Goal", b =>
                 {
                     b.HasOne("SharedLibrary.Models.Case", null)
@@ -637,6 +717,13 @@ namespace CaseSetup.Migrations
                     b.Navigation("Goals");
 
                     b.Navigation("Medications");
+                });
+
+            modelBuilder.Entity("SharedLibrary.Models.Debrief", b =>
+                {
+                    b.Navigation("Comments");
+
+                    b.Navigation("Events");
                 });
 #pragma warning restore 612, 618
         }

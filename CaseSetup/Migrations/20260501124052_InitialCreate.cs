@@ -53,6 +53,19 @@ namespace CaseSetup.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Debriefs",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Timestamp = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Debriefs", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "LabValues",
                 columns: table => new
                 {
@@ -222,6 +235,46 @@ namespace CaseSetup.Migrations
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Comments",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Text = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Timestamp = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    DebriefId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Comments", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Comments_Debriefs_DebriefId",
+                        column: x => x.DebriefId,
+                        principalTable: "Debriefs",
+                        principalColumn: "Id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Events",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Action = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Timestamp = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    DebriefId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Events", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Events_Debriefs_DebriefId",
+                        column: x => x.DebriefId,
+                        principalTable: "Debriefs",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -408,9 +461,19 @@ namespace CaseSetup.Migrations
                 column: "VitalsId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Comments_DebriefId",
+                table: "Comments",
+                column: "DebriefId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Diagnosis_CaseId",
                 table: "Diagnosis",
                 column: "CaseId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Events_DebriefId",
+                table: "Events",
+                column: "DebriefId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Goals_CaseId",
@@ -445,7 +508,13 @@ namespace CaseSetup.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "Comments");
+
+            migrationBuilder.DropTable(
                 name: "Diagnosis");
+
+            migrationBuilder.DropTable(
+                name: "Events");
 
             migrationBuilder.DropTable(
                 name: "Goals");
@@ -461,6 +530,9 @@ namespace CaseSetup.Migrations
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");
+
+            migrationBuilder.DropTable(
+                name: "Debriefs");
 
             migrationBuilder.DropTable(
                 name: "Cases");
