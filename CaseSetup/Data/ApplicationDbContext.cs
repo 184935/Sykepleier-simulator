@@ -1,4 +1,5 @@
 ﻿using CaseSetup.Areas.Identity.Data;
+using CaseSetup.Models;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using SharedLibrary.Models;
@@ -18,6 +19,9 @@ namespace CaseSetup.Data
         public DbSet<SharedLibrary.Models.Vitals> Vitals {  get; set; } = default!;
         public DbSet<User> Users {  get; set; } = default!;
         public DbSet<Goal> Goals { get; set; } = default!;
+        public DbSet<Event> Events {  get; set; } = default!;
+        public DbSet<Comment> Comments {  get; set; } = default!; 
+        public DbSet<Debrief> Debriefs {  get; set; } = default!;
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
