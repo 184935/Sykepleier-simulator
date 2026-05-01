@@ -8,7 +8,7 @@ namespace CaseSetup
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
             
@@ -49,7 +49,13 @@ namespace CaseSetup
             app.MapRazorPages()
                .WithStaticAssets();
 
-            app.Run();
+            using (var scope = app.Services.CreateScope())
+            {
+                var context = scope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
+                await ApplicationDbContext.SeedAsync(context);
+            }
+
+                app.Run();
         }
     }
 }

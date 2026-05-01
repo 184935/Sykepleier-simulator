@@ -225,7 +225,7 @@ namespace CaseSetup.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Case",
+                name: "Cases",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -239,21 +239,21 @@ namespace CaseSetup.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Case", x => x.Id);
+                    table.PrimaryKey("PK_Cases", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Case_MedHistory_MedicalHistoryId",
+                        name: "FK_Cases_MedHistory_MedicalHistoryId",
                         column: x => x.MedicalHistoryId,
                         principalTable: "MedHistory",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Case_Patients_PatientId",
+                        name: "FK_Cases_Patients_PatientId",
                         column: x => x.PatientId,
                         principalTable: "Patients",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Case_Vitals_VitalsId",
+                        name: "FK_Cases_Vitals_VitalsId",
                         column: x => x.VitalsId,
                         principalTable: "Vitals",
                         principalColumn: "Id",
@@ -272,9 +272,9 @@ namespace CaseSetup.Migrations
                 {
                     table.PrimaryKey("PK_Allergies", x => x.Allergen);
                     table.ForeignKey(
-                        name: "FK_Allergies_Case_CaseId",
+                        name: "FK_Allergies_Cases_CaseId",
                         column: x => x.CaseId,
-                        principalTable: "Case",
+                        principalTable: "Cases",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -294,15 +294,15 @@ namespace CaseSetup.Migrations
                 {
                     table.PrimaryKey("PK_Diagnosis", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Diagnosis_Case_CaseId",
+                        name: "FK_Diagnosis_Cases_CaseId",
                         column: x => x.CaseId,
-                        principalTable: "Case",
+                        principalTable: "Cases",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Goal",
+                name: "Goals",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -316,11 +316,11 @@ namespace CaseSetup.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Goal", x => x.Id);
+                    table.PrimaryKey("PK_Goals", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Goal_Case_CaseId",
+                        name: "FK_Goals_Cases_CaseId",
                         column: x => x.CaseId,
-                        principalTable: "Case",
+                        principalTable: "Cases",
                         principalColumn: "Id");
                 });
 
@@ -341,9 +341,9 @@ namespace CaseSetup.Migrations
                 {
                     table.PrimaryKey("PK_Medications", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Medications_Case_CaseId",
+                        name: "FK_Medications_Cases_CaseId",
                         column: x => x.CaseId,
-                        principalTable: "Case",
+                        principalTable: "Cases",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -393,18 +393,18 @@ namespace CaseSetup.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Case_MedicalHistoryId",
-                table: "Case",
+                name: "IX_Cases_MedicalHistoryId",
+                table: "Cases",
                 column: "MedicalHistoryId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Case_PatientId",
-                table: "Case",
+                name: "IX_Cases_PatientId",
+                table: "Cases",
                 column: "PatientId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Case_VitalsId",
-                table: "Case",
+                name: "IX_Cases_VitalsId",
+                table: "Cases",
                 column: "VitalsId");
 
             migrationBuilder.CreateIndex(
@@ -413,8 +413,8 @@ namespace CaseSetup.Migrations
                 column: "CaseId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Goal_CaseId",
-                table: "Goal",
+                name: "IX_Goals_CaseId",
+                table: "Goals",
                 column: "CaseId");
 
             migrationBuilder.CreateIndex(
@@ -448,7 +448,7 @@ namespace CaseSetup.Migrations
                 name: "Diagnosis");
 
             migrationBuilder.DropTable(
-                name: "Goal");
+                name: "Goals");
 
             migrationBuilder.DropTable(
                 name: "LabValues");
@@ -463,7 +463,7 @@ namespace CaseSetup.Migrations
                 name: "AspNetUsers");
 
             migrationBuilder.DropTable(
-                name: "Case");
+                name: "Cases");
 
             migrationBuilder.DropTable(
                 name: "MedHistory");

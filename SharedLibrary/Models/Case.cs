@@ -25,6 +25,8 @@ namespace SharedLibrary.Models
         public virtual MedicalHistory MedicalHistory { get; set; }
         public List<Goal> Goals {  get; set; }
 
+        public Case() { }
+
         public Case(int patientId, int vitalsId, int medicalHistoryId, bool editable, int difficultyInt)
         {
             PatientId = patientId;
@@ -32,15 +34,6 @@ namespace SharedLibrary.Models
             MedicalHistoryId = medicalHistoryId;
             Editable = editable;
             DifficultyInt = difficultyInt;
-            Goals = MakeGoals();
-        }
-
-        public List<Goal> MakeGoals()
-        {
-            List<Goal> goals = new List<Goal>();
-
-
-            return goals;
         }
     }
 }

@@ -287,7 +287,7 @@ namespace CaseSetup.Migrations
 
                     b.HasIndex("VitalsId");
 
-                    b.ToTable("Case");
+                    b.ToTable("Cases");
                 });
 
             modelBuilder.Entity("SharedLibrary.Models.Diagnosis", b =>
@@ -351,7 +351,7 @@ namespace CaseSetup.Migrations
 
                     b.HasIndex("CaseId");
 
-                    b.ToTable("Goal");
+                    b.ToTable("Goals");
                 });
 
             modelBuilder.Entity("SharedLibrary.Models.LabValues", b =>
@@ -387,19 +387,19 @@ namespace CaseSetup.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.PrimitiveCollection<string>("FamHistory")
+                    b.Property<string>("FamHistory")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.PrimitiveCollection<string>("MHistory")
+                    b.Property<string>("MHistory")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.PrimitiveCollection<string>("SocialHistory")
+                    b.Property<string>("SocialHistory")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.PrimitiveCollection<string>("SurgicalHistory")
+                    b.Property<string>("SurgicalHistory")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 

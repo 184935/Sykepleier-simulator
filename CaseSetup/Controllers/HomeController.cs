@@ -1,11 +1,21 @@
+using CaseSetup.Data;
 using CaseSetup.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
+using SharedLibrary.Models;
 
 namespace CaseSetup.Controllers
 {
+    
     public class HomeController : Controller
     {
+        private readonly ApplicationDbContext Context;
+
+        public HomeController(ApplicationDbContext context)
+        {
+            Context = context;
+        }
         public IActionResult Index()
         {
             return View();
@@ -17,12 +27,21 @@ namespace CaseSetup.Controllers
         }
         public IActionResult Student()
         {
-
-            return View();
+            List<Case> Cases = Context.Cases
+                .Include(c => c.Patient)
+                .Include(c => c.Vitals)
+                .ToList();
+            Context.Cases.Load();
+            return View(Cases);
         }
         public IActionResult Teacher()
         {
-            return View();
+            List<Case> Cases = Context.Cases
+                .Include(c => c.Patient)
+                .Include(c => c.Vitals)
+                .ToList();
+            Context.Cases.Load();
+            return View(Cases);
         }
 
 

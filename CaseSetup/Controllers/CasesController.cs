@@ -22,7 +22,7 @@ namespace CaseSetup.Controllers
         // GET: Cases
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Case.Include(@case => @case.MedicalHistory).Include(@case => @case.Patient).Include(@case => @case.Vitals);
+            var applicationDbContext = _context.Cases.Include(@case => @case.MedicalHistory).Include(@case => @case.Patient).Include(@case => @case.Vitals);
             return View(await applicationDbContext.ToListAsync());
         }
 
@@ -34,7 +34,7 @@ namespace CaseSetup.Controllers
                 return NotFound();
             }
 
-            var @case = await _context.Case
+            var @case = await _context.Cases
                 .Include(@case => @case.MedicalHistory)
                 .Include(@case => @case.Patient)
                 .Include(@case => @case.Vitals)
@@ -83,7 +83,7 @@ namespace CaseSetup.Controllers
                 return NotFound();
             }
 
-            var @case = await _context.Case.FindAsync(id);
+            var @case = await _context.Cases.FindAsync(id);
             if (@case == null)
             {
                 return NotFound();
@@ -140,7 +140,7 @@ namespace CaseSetup.Controllers
                 return NotFound();
             }
 
-            var @case = await _context.Case
+            var @case = await _context.Cases
                 .Include(@case => @case.MedicalHistory)
                 .Include(@case => @case.Patient)
                 .Include(@case => @case.Vitals)
@@ -158,10 +158,10 @@ namespace CaseSetup.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var @case = await _context.Case.FindAsync(id);
+            var @case = await _context.Cases.FindAsync(id);
             if (@case != null)
             {
-                _context.Case.Remove(@case);
+                _context.Cases.Remove(@case);
             }
 
             await _context.SaveChangesAsync();
@@ -170,7 +170,7 @@ namespace CaseSetup.Controllers
 
         private bool CaseExists(int id)
         {
-            return _context.Case.Any(e => e.Id == id);
+            return _context.Cases.Any(e => e.Id == id);
         }
     }
 }
