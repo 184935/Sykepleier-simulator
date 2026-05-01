@@ -6,13 +6,13 @@ using System.Text;
 
 namespace SharedLibrary.Models
 {
-    internal class Debrief
+    public class Debrief
     {
-        private int ID {  get; set; }
+        public int Id {  get; set; }
         [DataType(DataType.DateTime)]
-        private DateTime Timestamp { get; set; }
-        private List<Event> Events { get; set; }
-        private List<Comment> Comments { get; set; }
+        public DateTime Timestamp { get; set; }
+        public List<Event> Events { get; set; }
+        public List<Comment> Comments { get; set; }
 
         public Debrief(DateTime timestamp, List<Event> events, List<Comment> comments)
         {
