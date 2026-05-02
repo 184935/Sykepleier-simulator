@@ -3,6 +3,7 @@
     <File Path="pasientlib.cs" />
   </Folder>
   <Project Path="CaseSetup/CaseSetup.csproj" />
+  <Project Path="Rest-API/Rest-API.csproj" Id="93322f91-6649-4630-bbbe-4e21184f7037" />
   <Project Path="SharedLibrary/SharedLibrary.csproj" Id="21f04ea6-7301-4a17-879c-8ec3fdb87141" />
   <Project Path="StudSim/StudSim.csproj" />
 </Solution>
