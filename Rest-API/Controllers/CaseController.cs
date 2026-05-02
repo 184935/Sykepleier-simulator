@@ -58,7 +58,7 @@ namespace Rest_API.Controllers
                     .Include(c => c.Diagnoses)
                     .Where(c => c.Id == caseId).First();
 
-            User user = (User)Context.Users
+            User? user = Context.Users
                 .Where(u => u.Id == userId)
                 .FirstOrDefault();
             if (user == null || medCase == null) { return BadRequest(); }
@@ -71,15 +71,44 @@ namespace Rest_API.Controllers
 
         // GET api/<CaseController>/5
         [HttpGet("{id}")]
-        public string Get(int id)
+        public async Task<IActionResult> Get(int id)
         {
-            return "value";
+            Context.Cases.Load();
+            Case? medCase = Context.Cases
+                .Include(c => c.Patient)
+                .Include(c => c.Vitals)
+                .Include(c => c.Medications)
+                .Include(c => c.Allergies)
+                .Include(c => c.Diagnoses)
+                .FirstOrDefault(c => c.Id == id);
+            if (medCase != null)
+            {
+                return Ok(medCase);
+            } else {
+
+                return BadRequest();
+            }
+            
         }
 
         // POST api/<CaseController>
-        [HttpPost]
-        public void Post([FromBody] string value)
+        [HttpPost("addvitals")]
+        public async Task<IActionResult> AddVitals([FromBody] Vitals vitals)
         {
+            Context.Vitals.Add(vitals);
+            int id = Context.SaveChanges();
+            return Ok(id);
+
+        }
+
+        // PUT api/Case/changevitals
+        [HttpPut("changevitals")]
+        public async Task<IActionResult> ChangeVitals([FromBody] Vitals newVitals)
+        {
+            Context.Vitals.Update(newVitals);
+            await Context.SaveChangesAsync();
+            return Ok(newVitals);
+
         }
 
         // PUT api/<CaseController>/5
