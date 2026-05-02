@@ -301,6 +301,10 @@ namespace CaseSetup.Migrations
                     b.Property<int>("PatientId")
                         .HasColumnType("int");
 
+                    b.Property<string>("User")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<int>("VitalsId")
                         .HasColumnType("int");
 

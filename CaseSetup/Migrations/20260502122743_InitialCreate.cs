@@ -288,7 +288,8 @@ namespace CaseSetup.Migrations
                     MedicalHistoryId = table.Column<int>(type: "int", nullable: false),
                     Editable = table.Column<bool>(type: "bit", nullable: false),
                     DifficultyInt = table.Column<int>(type: "int", nullable: false),
-                    Difficulty = table.Column<int>(type: "int", nullable: false)
+                    Difficulty = table.Column<int>(type: "int", nullable: false),
+                    User = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
                 {

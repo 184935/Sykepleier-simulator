@@ -1,5 +1,6 @@
 
 using System.Text.Json.Serialization;
+using CaseSetup.Areas.Identity.Data;
 using CaseSetup.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
@@ -16,6 +17,9 @@ namespace Rest_API
             var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? throw new InvalidOperationException("Connection string 'DefaultConnection' not found."); 
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(connectionString));
+            builder.Services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedEmail = false)
+                .AddEntityFrameworkStores<ApplicationDbContext>();
+
 
             builder.Services.AddControllers()
                 .AddJsonOptions(options =>

@@ -25,7 +25,7 @@ namespace Rest_API.Controllers
         }
 
         [HttpPost("login")]
-        public async Task<IActionResult> Login([FromBody] LoginDTO logdto)
+        public async Task<IActionResult> Login([FromHeader] LoginDTO logdto)
         {
             User user = await _userManager.FindByEmailAsync(logdto.Email);
 

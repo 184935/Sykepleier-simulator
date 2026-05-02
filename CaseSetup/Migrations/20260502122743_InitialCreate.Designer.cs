@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CaseSetup.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260501124052_InitialCreate")]
+    [Migration("20260502122743_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -303,6 +303,10 @@ namespace CaseSetup.Migrations
 
                     b.Property<int>("PatientId")
                         .HasColumnType("int");
+
+                    b.Property<string>("User")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("VitalsId")
                         .HasColumnType("int");

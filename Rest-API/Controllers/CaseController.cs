@@ -2,6 +2,7 @@
 using CaseSetup.Data;
 using SharedLibrary.Models;
 using Microsoft.EntityFrameworkCore;
+using CaseSetup.Areas.Identity.Data;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -45,9 +46,25 @@ namespace Rest_API.Controllers
 
         // PATCH api/<CaseController>
         [HttpPatch]
-        public void Patch(int caseId, string userId)
+        public IActionResult Patch(int caseId, string userId)
         {
             Context.Cases.Load();
+            Context.Users.Load();
+            Case medCase = (Case)Context.Cases
+                    .Include(c => c.Patient)
+                    .Include(c => c.Vitals)
+                    .Include(c => c.Medications)
+                    .Include(c => c.Allergies)
+                    .Include(c => c.Diagnoses)
+                    .Where(c => c.Id == caseId).First();
+
+            User user = (User)Context.Users
+                .Where(u => u.Id == userId);
+            if (user == null || medCase == null) { return BadRequest(); }
+            medCase.User = user.Id;
+            Context.Update(medCase);
+            Context.SaveChanges();
+            return Ok();
 
         }
 
