@@ -101,6 +101,18 @@ namespace Rest_API.Controllers
 
         }
 
+        // GET api/Case/vitals/id
+        [HttpGet("vitals/{id}")]
+        public async Task<IActionResult> GetVitals([FromRoute] int id)
+        {
+            Vitals? vitals = await Context.Vitals.FindAsync(id);
+            if (vitals == null)
+            {
+                return BadRequest("Vitals doesnn't exist");
+            }
+            return Ok(vitals);
+        }
+
         // PUT api/Case/changevitals
         [HttpPut("changevitals")]
         public async Task<IActionResult> ChangeVitals([FromBody] Vitals newVitals)
