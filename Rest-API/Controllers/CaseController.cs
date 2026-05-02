@@ -111,6 +111,89 @@ namespace Rest_API.Controllers
 
         }
 
+        // POST api/Case/startsim
+        [HttpPost("startsim")]
+        public async Task<IActionResult> StartSim(int caseId, [FromBody] Event simStart)
+        {
+            Case? medCase = await Context.Cases
+                .Include(c => c.Vitals)
+                .FirstOrDefaultAsync(c => c.Id == caseId);
+            if (medCase == null)
+            {
+                return BadRequest("Case doesn't exist");
+            }
+            Vitals tempVitals = new Vitals(
+                medCase.Vitals.OverPressure, medCase.Vitals.UnderPressure,
+                medCase.Vitals.Pulse, medCase.Vitals.RespiratoryRate,
+                medCase.Vitals.OxygenSaturation, medCase.Vitals.Temperature);
+            Context.Vitals.Add(tempVitals);
+            //int vitId = Context.SaveChanges();
+            Debrief debrief = new Debrief(DateTime.Now);
+            debrief.Events.Add(simStart);
+            Context.Debriefs.Add(debrief);
+            //int debId = Context.Save
+            await Context.SaveChangesAsync();
+            return Ok(new
+            {
+                Vitalsid = tempVitals.Id,
+                DebriefId = debrief.Id
+            });
+        }
+
+        // POST api/Case/stopsim
+
+        [HttpPost("stopsim")]
+        public async Task<IActionResult> StopSim([FromBody]Vitals tempVital, [FromBody] Event simEnd, int debId)
+        {
+            Debrief? deb = await Context.Debriefs.
+                Include(d => d.Events)
+                .FirstOrDefaultAsync();
+            if (deb == null)
+            {
+                return BadRequest("Debrief doesn't exist");
+            }
+            deb.Events.Add(simEnd);
+            Context.Remove(tempVital);
+            await Context.SaveChangesAsync();
+            return Ok("Simulation finished");
+
+        }
+
+        // POST api/Case/addevent
+        [HttpPost("addevent")]
+        public async Task<IActionResult> AddEvent([FromBody] Event newEvent, int debId)
+        {
+            Debrief? deb = await Context.Debriefs
+                .Include(d => d.Events)
+                .FirstOrDefaultAsync();
+            if (deb == null)
+            {
+                return BadRequest("Debrief doesn't exist");
+            }
+            deb.Events.Add(newEvent);
+            await Context.SaveChangesAsync();
+
+            return Ok("Event added");
+        }
+
+        // POST api/Case/addcomment
+        [HttpPost]
+        public async Task<IActionResult> AddComment([FromBody] Comment newComment, int debId)
+        {
+            Debrief? deb = await Context.Debriefs
+                .Include(d => d.Comments)
+                .FirstOrDefaultAsync();
+            if (deb == null)
+            {
+                return BadRequest("Debrief doesn't exist");
+            }
+            deb.Comments.Add(newComment);
+            await Context.SaveChangesAsync();
+            return Ok("Comment added");
+
+        }
+
+
         // PUT api/<CaseController>/5
         [HttpPut("{id}")]
         public void Put(int id, [FromBody] string value)

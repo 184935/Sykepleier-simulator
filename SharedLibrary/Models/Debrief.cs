@@ -14,12 +14,12 @@ namespace SharedLibrary.Models
         public List<Event> Events { get; set; }
         public List<Comment> Comments { get; set; }
 
-        public Debrief() { }
-        public Debrief(DateTime timestamp, List<Event> events, List<Comment> comments)
+        public Debrief() {}
+        public Debrief(DateTime timestamp)
         {
             Timestamp = timestamp;
-            Events = events;
-            Comments = comments;
+            Events = new List<Event>();
+            Comments = new List<Comment>();
         }
     }
 }
