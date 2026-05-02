@@ -119,6 +119,9 @@ namespace CaseSetup.Areas.Identity.Pages.Account
                 if (result.Succeeded)
                 {
                     User user = await _userManager.FindByNameAsync(Input.Email);
+
+                    await _userManager.AddClaimAsync(user,
+                        new Claim("IsTeacher", user.IsTeacher.ToString()));
                     _logger.LogInformation("User logged in.");
                     if (user.IsTeacher)
                     {

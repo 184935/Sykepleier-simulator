@@ -45,8 +45,8 @@ namespace Rest_API.Controllers
 
 
         // PATCH api/<CaseController>
-        [HttpPatch]
-        public IActionResult Patch(int caseId, string userId)
+        [HttpPatch("{caseId}/adduser/{userId}")]
+        public async Task<IActionResult> AddUser([FromRoute]int caseId, [FromRoute]string userId)
         {
             Context.Cases.Load();
             Context.Users.Load();
@@ -59,11 +59,12 @@ namespace Rest_API.Controllers
                     .Where(c => c.Id == caseId).First();
 
             User user = (User)Context.Users
-                .Where(u => u.Id == userId);
+                .Where(u => u.Id == userId)
+                .FirstOrDefault();
             if (user == null || medCase == null) { return BadRequest(); }
             medCase.User = user.Id;
             Context.Update(medCase);
-            Context.SaveChanges();
+            await Context.SaveChangesAsync();
             return Ok();
 
         }
