@@ -3,6 +3,7 @@ using CaseSetup.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+ 
 
 namespace CaseSetup
 {
@@ -21,6 +22,11 @@ namespace CaseSetup
             builder.Services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedAccount = false)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
             builder.Services.AddControllersWithViews();
+
+            builder.Services.AddHttpClient("Rest-API", client =>
+            {
+                client.BaseAddress = new Uri("https://localhost:7091/");
+            });
 
             var app = builder.Build();
 

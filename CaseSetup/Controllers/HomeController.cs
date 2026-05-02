@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
 using SharedLibrary.Models;
+using System.Net.Http.Json;
 
 namespace CaseSetup.Controllers
 {
@@ -11,10 +12,12 @@ namespace CaseSetup.Controllers
     public class HomeController : Controller
     {
         private readonly ApplicationDbContext Context;
+        private readonly IHttpClientFactory _httpClientFactory;
 
-        public HomeController(ApplicationDbContext context)
+        public HomeController(ApplicationDbContext context, IHttpClientFactory httpClientFactory)
         {
             Context = context;
+            _httpClientFactory = httpClientFactory;
         }
         public IActionResult Index()
         {
@@ -25,23 +28,23 @@ namespace CaseSetup.Controllers
         {
             return View();
         }
-        public IActionResult Student()
+        public async Task<IActionResult> Student()
         {
-            List<Case> Cases = Context.Cases
-                .Include(c => c.Patient)
-                .Include(c => c.Vitals)
-                .ToList();
-            Context.Cases.Load();
-            return View(Cases);
+            var client = _httpClientFactory.CreateClient("Rest-API");
+            var cases = await client.GetFromJsonAsync<List<Case>>("api/Case/cases");
+            return View(cases);
         }
-        public IActionResult Teacher()
+        public async Task<IActionResult> Teacher()
         {
-            List<Case> Cases = Context.Cases
-                .Include(c => c.Patient)
-                .Include(c => c.Vitals)
-                .ToList();
-            Context.Cases.Load();
-            return View(Cases);
+            var client = _httpClientFactory.CreateClient("Rest-API");
+            var cases = await client.GetFromJsonAsync<List<Case>>("api/Case/cases");
+            return View(cases);
+        }
+
+        [HttpPost]
+        public void AddUser(int caseid)
+        {
+
         }
 
 

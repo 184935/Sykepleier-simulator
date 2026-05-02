@@ -10,7 +10,7 @@
 
 @foreach (var medCase in Model)
 {
-    <form method="post">
+    <form asp-controller="Home" asp-action="AddUser" method="post">
         <p>Navn: @medCase.Patient.Name Alder: @medCase.Patient.Age Kjonn: @medCase.Patient.Gender</p>
         <p>Vitals: </p>
         <p>Blodtrykk: @medCase.Vitals.BlodPressure()</p>

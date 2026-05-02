@@ -38,6 +38,7 @@ namespace SharedLibrary.Models
             MedicalHistoryId = medicalHistoryId;
             Editable = editable;
             DifficultyInt = difficultyInt;
+            User = "";
         }
     }
 }
