@@ -1,4 +1,6 @@
 ﻿
+using Microsoft.Identity.Client;
+
 namespace SharedLibrary.Models
 {
     public class Case
@@ -19,10 +21,12 @@ namespace SharedLibrary.Models
 
         public int DifficultyInt { get; set; }
         public virtual Difficulty Difficulty { get; set; }
+        public string User {  get; set; }
 
         public virtual Patient Patient { get; set; }
         public virtual Vitals Vitals { get; set; }
         public virtual MedicalHistory MedicalHistory { get; set; }
+
         public List<Goal> Goals {  get; set; }
 
         public Case() { }
