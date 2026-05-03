@@ -7,6 +7,45 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
+        <Button Content="Start" Margin="10,13,750,401"/>
+        <Label Content="Label" HorizontalAlignment="Left" Margin="92,10,0,0" VerticalAlignment="Top" Width="150"/>
+        <Label Content="Label" HorizontalAlignment="Left" Margin="262,10,0,0" VerticalAlignment="Top" Width="60"/>
+        <Label Content="Label" HorizontalAlignment="Left" Margin="336,10,0,0" VerticalAlignment="Top" Width="80"/>
+        <Label Content="Label" HorizontalAlignment="Left" Margin="432,10,0,0" VerticalAlignment="Top" Width="60"/>
+        <Button Content=" Historikk " HorizontalAlignment="Left" Margin="546,13,0,0" VerticalAlignment="Top"/>
+        <Button Content=" Diagnoser " HorizontalAlignment="Left" Margin="620,13,0,0" VerticalAlignment="Top"/>
+        <ListView HorizontalAlignment="Left" Height="271" Margin="644,153,0,0" VerticalAlignment="Top" Width="150" d:ItemsSource="{d:SampleData ItemCount=5}">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn/>
+                </GridView>
+            </ListView.View>
+        </ListView>
+        <ListView HorizontalAlignment="Left" Height="149" Margin="10,68,0,0" VerticalAlignment="Top" Width="232" d:ItemsSource="{d:SampleData ItemCount=5}">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn/>
+                </GridView>
+            </ListView.View>
+        </ListView>
+        <ListView HorizontalAlignment="Left" Height="192" Margin="10,232,0,0" VerticalAlignment="Top" Width="232" d:ItemsSource="{d:SampleData ItemCount=5}">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn/>
+                </GridView>
+            </ListView.View>
+        </ListView>
+        <ListView HorizontalAlignment="Left" Height="167" Margin="262,68,0,0" VerticalAlignment="Top" Width="377" d:ItemsSource="{d:SampleData ItemCount=5}">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn/>
+                </GridView>
+            </ListView.View>
+        </ListView>
+        <Button Content=" Gi medisin " HorizontalAlignment="Left" Margin="272,254,0,0" VerticalAlignment="Top"/>
+        <Button Content=" Gi intravanøst " HorizontalAlignment="Center" Margin="0,254,0,0" VerticalAlignment="Top"/>
+        <Button Content=" Ta på teppe " HorizontalAlignment="Left" Margin="476,254,0,0" VerticalAlignment="Top"/>
+        <Button Content=" Avkjøl " HorizontalAlignment="Left" Margin="564,254,0,0" VerticalAlignment="Top"/>
 
     </Grid>
 </Window>

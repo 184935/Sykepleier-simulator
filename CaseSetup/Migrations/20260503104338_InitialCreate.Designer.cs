@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CaseSetup.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260502122743_InitialCreate")]
+    [Migration("20260503104338_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -24,31 +24,6 @@ namespace CaseSetup.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-            modelBuilder.Entity("CaseSetup.Models.Comment", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<int?>("DebriefId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Text")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("Timestamp")
-                        .HasColumnType("datetime2");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("DebriefId");
-
-                    b.ToTable("Comments");
-                });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
@@ -322,6 +297,31 @@ namespace CaseSetup.Migrations
                     b.ToTable("Cases");
                 });
 
+            modelBuilder.Entity("SharedLibrary.Models.Comment", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int?>("DebriefId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Text")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("Timestamp")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DebriefId");
+
+                    b.ToTable("Comments");
+                });
+
             modelBuilder.Entity("SharedLibrary.Models.Debrief", b =>
                 {
                     b.Property<int>("Id")
@@ -330,10 +330,15 @@ namespace CaseSetup.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int>("CaseId")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("Timestamp")
                         .HasColumnType("datetime2");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("CaseId");
 
                     b.ToTable("Debriefs");
                 });
@@ -586,13 +591,6 @@ namespace CaseSetup.Migrations
                     b.HasDiscriminator().HasValue("User");
                 });
 
-            modelBuilder.Entity("CaseSetup.Models.Comment", b =>
-                {
-                    b.HasOne("SharedLibrary.Models.Debrief", null)
-                        .WithMany("Comments")
-                        .HasForeignKey("DebriefId");
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -678,6 +676,24 @@ namespace CaseSetup.Migrations
                     b.Navigation("Patient");
 
                     b.Navigation("Vitals");
+                });
+
+            modelBuilder.Entity("SharedLibrary.Models.Comment", b =>
+                {
+                    b.HasOne("SharedLibrary.Models.Debrief", null)
+                        .WithMany("Comments")
+                        .HasForeignKey("DebriefId");
+                });
+
+            modelBuilder.Entity("SharedLibrary.Models.Debrief", b =>
+                {
+                    b.HasOne("SharedLibrary.Models.Case", "ConnectedCase")
+                        .WithMany()
+                        .HasForeignKey("CaseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("ConnectedCase");
                 });
 
             modelBuilder.Entity("SharedLibrary.Models.Diagnosis", b =>
