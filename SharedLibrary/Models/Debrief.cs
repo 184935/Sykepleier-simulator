@@ -14,12 +14,16 @@ namespace SharedLibrary.Models
         public List<Event> Events { get; set; }
         public List<Comment> Comments { get; set; }
 
+        public int CaseId { get; set; }
+        public virtual Case ConnectedCase { get; set; }
+
         public Debrief() {}
-        public Debrief(DateTime timestamp)
+        public Debrief(DateTime timestamp, int caseid)
         {
             Timestamp = timestamp;
             Events = new List<Event>();
             Comments = new List<Comment>();
+            CaseId = caseid;
         }
     }
 }

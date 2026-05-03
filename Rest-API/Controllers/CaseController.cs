@@ -20,6 +20,21 @@ namespace Rest_API.Controllers
             Context = context;
         }
 
+        [HttpGet("debriefs")]
+        public async Task<IActionResult> GetDebriefs()
+        {
+            List<Debrief> Debriefs = await Context.Debriefs
+                .Include(d => d.Events)
+                .Include(d => d.Comments)
+                .ToListAsync();
+
+            if (Debriefs.Count == 0)
+            {
+                return BadRequest("No debriefs");
+            }
+            return Ok(Debriefs);
+        }
+
 
         [HttpGet("cases")]
         public IEnumerable<Case> GetCases()
@@ -113,6 +128,34 @@ namespace Rest_API.Controllers
             return Ok(vitals);
         }
 
+        // GET api/Case/checksim
+        [HttpGet("checksim")]
+        public async Task<IActionResult> CheckSim()
+        {
+            Debrief? aktiv = await Context.Debriefs
+                .Include(d => d.Events)
+                .LastOrDefaultAsync();
+            if (aktiv == null || aktiv.Events.Last().Action.Equals("Simulation finished"))
+            {
+                return BadRequest("No active sim");
+            }
+            Case? medCase = await Context.Cases
+                .Include(c => c.Allergies)
+                .Include(c => c.Diagnoses)
+                .Include(c => c.MedicalHistory)
+                .Include(c => c.Medications)
+                .FirstOrDefaultAsync();
+            Vitals? tempVitals = await Context.Vitals.LastAsync();
+
+            return Ok(new
+            {
+                Vitals = tempVitals,
+                Case = medCase,
+                DebriefId = aktiv.Id
+            });
+
+        }
+
         // PUT api/Case/changevitals
         [HttpPut("changevitals")]
         public async Task<IActionResult> ChangeVitals([FromBody] Vitals newVitals)
@@ -140,7 +183,7 @@ namespace Rest_API.Controllers
                 medCase.Vitals.OxygenSaturation, medCase.Vitals.Temperature);
             Context.Vitals.Add(tempVitals);
             //int vitId = Context.SaveChanges();
-            Debrief debrief = new Debrief(DateTime.Now);
+            Debrief debrief = new Debrief(DateTime.Now, medCase.Id);
             debrief.Events.Add(simStart);
             Context.Debriefs.Add(debrief);
             //int debId = Context.Save
