@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.Collections.ObjectModel;
+using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -24,12 +25,14 @@ namespace StudSim
         public int DebId {  get; set; }
         public long ElapsedSec { get; set; }
         public bool AllergiesChecked { get; set; }
-        public List<Event> Events = new List<Event>();
+        public ObservableCollection<Event> EventLogg = new();
         public List<Goal> Goals {  get; set; }
+        public DispatcherTimer timer { get; set; }
 
         public MainWindow()
         {
             InitializeComponent();
+            Logg.DataContext = EventLogg;
         }
 
 
@@ -58,6 +61,7 @@ namespace StudSim
                 sodium.Content = "Natrium: " + ActiveCase.LabValues.Sodium;
                 // Makes the start event and starts the debrief
                 Event startSim = new Event("Simulering startet",DateTime.Now);
+                EventLogg.Add(startSim);
                 StartsimDTO? startsimDTO = await App.service.StartSim(ActiveCase.Id, startSim);
                 if (startsimDTO != null)
                 {
@@ -65,14 +69,20 @@ namespace StudSim
                     tempVitals.Id = startsimDTO.VitalsId;
                     DebId = startsimDTO.DebriefId;
                 }
+
+                // Legger Medisiner inn i listen
+                medList.DataContext = ActiveCase.Medications;
+
                 // Sjekker maal for casen
                 Goals = SimServices.CheckGoals(ActiveCase.Goals, ActiveCase.Vitals);
 
                 // Setter i gang timer for simuleringen
-                DispatcherTimer timer = new DispatcherTimer();
+                timer = new DispatcherTimer();
                 timer.Interval = TimeSpan.FromSeconds(1);
                 timer.Tick += Timer_Tick;
                 timer.Start();
+
+                
 
             }
         }
@@ -80,6 +90,7 @@ namespace StudSim
         private async void givemeds_Click(object sender, RoutedEventArgs e)
         {
             Event meds = new Event("Given medication", DateTime.Now);
+            EventLogg.Add(meds);
             SimServices.GiveMedication(tempVitals);
             await App.service.AddEvent(meds, DebId);
             await App.service.ChangeVitals(tempVitals);
@@ -89,12 +100,14 @@ namespace StudSim
             if (!AllergiesChecked)
             {
                 Event fail = new Event("FAILED - Did not check allergies", DateTime.Now);
-                App.service.AddEvent(fail, DebId);
+                EventLogg.Add(fail);
+                await App.service.AddEvent(fail, DebId);
             }
         }
         private async void giveiv_Click(object sender, RoutedEventArgs e)
         {
             Event IV = new Event("Given IV", DateTime.Now);
+            EventLogg.Add(IV);
             SimServices.GiveIV(tempVitals);
             await App.service.AddEvent(IV, DebId);
             await App.service.ChangeVitals(tempVitals);
@@ -104,6 +117,7 @@ namespace StudSim
         private async void giveblanket_Click(object sender, RoutedEventArgs e)
         {
             Event heated = new Event("Warmed up", DateTime.Now);
+            EventLogg.Add(heated);
             SimServices.GiveBlanket(tempVitals);
             await App.service.AddEvent(heated, DebId);
             await App.service.ChangeVitals(tempVitals);
@@ -113,6 +127,7 @@ namespace StudSim
         private async void cooldown_Click(object sender, RoutedEventArgs e)
         {
             Event cooled = new Event("Cooled down", DateTime.Now);
+            EventLogg.Add(cooled);
             SimServices.CoolDown(tempVitals);
             await App.service.AddEvent(cooled, DebId);
             await App.service.ChangeVitals(tempVitals);
@@ -126,9 +141,12 @@ namespace StudSim
 
             if (Goals.Count == 0)
             {
+                timer.Stop();
                 Event done = new Event("Simulation finished", DateTime.Now);
+                EventLogg.Add(done);
                 await App.service.StopSim(tempVitals.Id, DebId, done);
                 MessageBox.Show("Simulering ferdig");
+                
             }
             else
             {
@@ -138,10 +156,33 @@ namespace StudSim
                     if (!g.Completed && g.Time < ElapsedSec)
                     {
                         Event failed = new Event("FAILED - Goal not achieved in time", DateTime.Now);
+                        EventLogg.Add(failed);
                         await App.service.AddEvent(failed, DebId);
                     }
                 }
             }
+        }
+
+        private async void allergies_Click(object sender, RoutedEventArgs e)
+        {
+            List<Allergy> allergies = ActiveCase.Allergies;
+            Allergies alg = new Allergies(allergies);
+            alg.Show();
+
+        }
+
+        private void diagnosis_Click(object sender, RoutedEventArgs e)
+        {
+            List<SharedLibrary.Models.Diagnosis> diagnoes = ActiveCase.Diagnoses;
+            Diagnosis dia = new Diagnosis(diagnoes);
+            dia.Show();
+        }
+
+        private void history_Click(object sender, RoutedEventArgs e)
+        {
+            History his = new History(ActiveCase.MedicalHistory);
+            his.Show();
+
         }
     }
 }

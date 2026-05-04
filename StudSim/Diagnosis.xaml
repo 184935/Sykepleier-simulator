@@ -1,0 +1,23 @@
+﻿<Window x:Class="StudSim.Diagnosis"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:StudSim"
+        mc:Ignorable="d"
+        Title="Diagnosis" Height="450" Width="800">
+    <Grid>
+        <ListView Name="Diagnosislist" HorizontalAlignment="Center" Height="414" VerticalAlignment="Center" Width="780" ItemsSource="{Binding}">
+            <ListView.View>
+                <GridView>
+                    <GridView.Columns>
+                        <GridViewColumn Width="120" Header="Navn" DisplayMemberBinding="{Binding Path=Name}" />
+                        <GridViewColumn Width="330" Header="Beskrivelse" DisplayMemberBinding="{Binding Path=Description}" />
+                        <GridViewColumn Width="330" Header="Behandling" DisplayMemberBinding="{Binding Path=Treatment}" />
+                    </GridView.Columns>
+                </GridView>
+            </ListView.View>
+        </ListView>
+
+    </Grid>
+</Window>
