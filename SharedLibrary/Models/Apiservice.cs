@@ -64,4 +64,41 @@ public class Apiservice
     {
         await _client.PostAsJsonAsync($"api/Case/addevent/{debid}", _event);
     }
+
+    public async Task<Case?> GetCase(int caseId)
+    {
+        try
+        {
+            return await _client.GetFromJsonAsync<Case>($"api/Case/{caseId}");
+        }
+        catch (HttpRequestException ex)
+        {
+            return null;
+        }
+    }
+    public async void AddVitals(Vitals vitals)
+    {
+        await _client.PostAsJsonAsync("api/Case/addvitals", vitals);
+    }
+    public async void ChangeVitals(Vitals vitals)
+    {
+        await _client.PostAsJsonAsync("api/Case/changevitals", vitals);
+    }
+
+    public async Task<StartsimDTO?> StartSim(int caseId, Event eventStart) 
+    {
+        var response = await _client.PostAsJsonAsync($"api/Case/startsim/{caseId}", eventStart);
+        if (response.IsSuccessStatusCode)
+        {
+            return await response.Content.ReadFromJsonAsync<StartsimDTO>();
+        }
+        return null;
+
+    }
+    public async void StopSim(int vitalsId, int debId, Event eventStop)
+    {
+        await _client.PostAsJsonAsync($"api/Case/stopsim/{vitalsId}/{debId}", eventStop);
+
+    }
+
 }

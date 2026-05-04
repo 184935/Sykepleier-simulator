@@ -188,11 +188,11 @@ namespace Rest_API.Controllers
             Context.Debriefs.Add(debrief);
             //int debId = Context.Save
             await Context.SaveChangesAsync();
-            return Ok(new
-            {
-                Vitalsid = tempVitals.Id,
-                DebriefId = debrief.Id
-            });
+            return Ok(new StartsimDTO
+            (
+                tempVitals.Id,
+                debrief.Id
+            ));
         }
 
         // POST api/Case/stopsim
