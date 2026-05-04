@@ -20,5 +20,10 @@ namespace StudSim
         {
             InitializeComponent();
         }
+
+        private void start_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

@@ -25,9 +25,9 @@ namespace Rest_API.Controllers
         }
 
         [HttpPost("login")]
-        public async Task<IActionResult> Login([FromHeader] LoginDTO logdto)
+        public async Task<IActionResult> Login([FromBody] LoginDTO logdto)
         {
-            User user = await _userManager.FindByEmailAsync(logdto.Email);
+            User? user = await _userManager.FindByEmailAsync(logdto.Email);
 
             if (user == null)
             {
@@ -39,7 +39,7 @@ namespace Rest_API.Controllers
             {
                 return Unauthorized("Ugyldig brukernavn eller passord");
             }
-            var medCase = Context.Cases
+            var medCase = await Context.Cases
                 .Include(c => c.Patient)
                 .Include(c => c.Vitals)
                 .Include(c => c.Goals)
@@ -56,9 +56,5 @@ namespace Rest_API.Controllers
         }
     }
 
-    public class LoginDTO
-    {
-        public string Email { get; set; }
-        public string Password { get; set; }
-    }
+    
 }
