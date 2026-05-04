@@ -27,7 +27,7 @@ namespace SharedLibrary.Models
 
         public bool Validate(double value)
         {
-            if (value > Lower && value < Upper)
+            if (value >= Lower && value <= Upper)
             {
                 Completed = true;
                 return true;

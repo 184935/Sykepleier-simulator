@@ -209,7 +209,10 @@ namespace Rest_API.Controllers
             }
             Vitals? tempVital = await Context.Vitals.FindAsync(tempVitalid);
             deb.Events.Add(simEnd);
-            Context.Remove(tempVital);
+            if (tempVital != null)
+            {
+                Context.Vitals.Remove(tempVital);
+            }
             await Context.SaveChangesAsync();
             return Ok("Simulation finished");
 

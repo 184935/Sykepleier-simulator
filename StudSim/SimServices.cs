@@ -7,20 +7,58 @@ namespace StudSim
 {
     public class SimServices
     {
-        public static void CheckGoals(Case Case)
+        public static List<Goal> CheckGoals(List<Goal> Goals, Vitals Vitals)
         {
-            List<Goal> Goals = Case.Goals;
-            Goals[0].Validate(Case.Vitals.UnderPressure);
-            Goals[1].Validate(Case.Vitals.OverPressure);
-            Goals[2].Validate(Case.Vitals.Temperature);
+           
+
             foreach (Goal goal in Goals)
             {
-                if (goal.Completed)
+                if (goal.Name.Equals("Stabalize underpressure"))
                 {
-                    Goals.Remove(goal);
+                    goal.Validate(Vitals.UnderPressure);
+                } else if(goal.Name.Equals("Stabalize overpressure"))
+                {
+                    goal.Validate(Vitals.OverPressure);
+                } else if(goal.Name.Equals("Stabalize temperature"))
+                {
+                    goal.Validate(Vitals.Temperature);
                 }
             }
-            Case.Goals = Goals;
+            for (int i = Goals.Count-1; i >= 0; i--)
+            {
+                if (Goals[i].Completed)
+                {
+                    Goals.RemoveAt(i);
+                }
+            }
+            return Goals;
+        }
+        public static bool CheckVitals(Vitals _vitals)
+        {
+            return true;
+        }
+        private static bool CheckRange(double upper, double under, double val)
+        {
+            return (upper > val && under < val);
+        }
+
+        public static void GiveBlanket(Vitals Vitals)
+        {
+            Vitals.Temperature = 37;
+        }
+        public static void CoolDown(Vitals Vitals)
+        {
+            Vitals.Temperature = 37;
+        }
+        public static void GiveMedication(Vitals Vitals)
+        {
+            Vitals.OverPressure = 120;
+            Vitals.UnderPressure = 60;
+        }
+        public static void GiveIV(Vitals Vitals)
+        {
+            Vitals.OverPressure = 120;
+            Vitals.UnderPressure = 60;
         }
 
     }

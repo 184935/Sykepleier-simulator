@@ -56,13 +56,15 @@ public class Apiservice
         }
     }
 
-    public async void AddComment(Comment comment, int debid)
+    public async Task<object> AddComment(Comment comment, int debid)
     {
         await _client.PostAsJsonAsync($"api/Case/addcomment/{debid}", comment);
+        return null;
     }
-    public async void AddEvent(Event _event, int debid)
+    public async Task<object> AddEvent(Event _event, int debid)
     {
         await _client.PostAsJsonAsync($"api/Case/addevent/{debid}", _event);
+        return null;
     }
 
     public async Task<Case?> GetCase(int caseId)
@@ -76,13 +78,15 @@ public class Apiservice
             return null;
         }
     }
-    public async void AddVitals(Vitals vitals)
+    public async Task<object> AddVitals(Vitals vitals)
     {
         await _client.PostAsJsonAsync("api/Case/addvitals", vitals);
+        return null;
     }
-    public async void ChangeVitals(Vitals vitals)
+    public async Task<object> ChangeVitals(Vitals vitals)
     {
         await _client.PostAsJsonAsync("api/Case/changevitals", vitals);
+        return null;
     }
 
     public async Task<StartsimDTO?> StartSim(int caseId, Event eventStart) 
@@ -95,10 +99,10 @@ public class Apiservice
         return null;
 
     }
-    public async void StopSim(int vitalsId, int debId, Event eventStop)
+    public async Task<object> StopSim(int vitalsId, int debId, Event eventStop)
     {
         await _client.PostAsJsonAsync($"api/Case/stopsim/{vitalsId}/{debId}", eventStop);
-
+        return null;
     }
 
 }

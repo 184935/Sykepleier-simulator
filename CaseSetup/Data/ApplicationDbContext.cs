@@ -25,8 +25,8 @@ namespace CaseSetup.Data
 
         public static List<Goal> MakeGoals()
         {
-            Goal StabUnderP = new Goal("Stabalize underpressure", 80, 60, 5000);
-            Goal StabOverP = new Goal("Stabalize overpressure", 120, 90, 5000);
+            Goal StabUnderP = new Goal("Stabalize underpressure", 80, 55, 5000);
+            Goal StabOverP = new Goal("Stabalize overpressure", 121, 90, 5000);
             Goal StabTemp = new Goal("Stabalize temperature", 38, 36, 10000);
             List<Goal> Goals2 = [StabOverP, StabUnderP, StabTemp];
             return Goals2;

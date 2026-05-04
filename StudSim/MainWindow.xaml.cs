@@ -23,13 +23,18 @@ namespace StudSim
         public Vitals? tempVitals { get; set; }
         public int DebId {  get; set; }
         public long ElapsedSec { get; set; }
+        public bool AllergiesChecked { get; set; }
+        public List<Event> Events = new List<Event>();
+        public List<Goal> Goals {  get; set; }
 
         public MainWindow()
         {
             InitializeComponent();
         }
 
-        private async Task start_Click(object sender, RoutedEventArgs e)
+
+
+        private async void start_Click(object sender, RoutedEventArgs e)
         {
             Login log = new Login();
             if (log.ShowDialog() == true)
@@ -61,7 +66,7 @@ namespace StudSim
                     DebId = startsimDTO.DebriefId;
                 }
                 // Sjekker maal for casen
-                SimServices.CheckGoals(ActiveCase);
+                Goals = SimServices.CheckGoals(ActiveCase.Goals, ActiveCase.Vitals);
 
                 // Setter i gang timer for simuleringen
                 DispatcherTimer timer = new DispatcherTimer();
@@ -72,24 +77,68 @@ namespace StudSim
             }
         }
 
-        private void Timer_Tick(object? sender, EventArgs e)
+        private async void givemeds_Click(object sender, RoutedEventArgs e)
+        {
+            Event meds = new Event("Given medication", DateTime.Now);
+            SimServices.GiveMedication(tempVitals);
+            await App.service.AddEvent(meds, DebId);
+            await App.service.ChangeVitals(tempVitals);
+            Goals = SimServices.CheckGoals(Goals, tempVitals);
+            bloodpressure.Content = "Blodtrykk: " + tempVitals.BlodPressure();
+
+            if (!AllergiesChecked)
+            {
+                Event fail = new Event("FAILED - Did not check allergies", DateTime.Now);
+                App.service.AddEvent(fail, DebId);
+            }
+        }
+        private async void giveiv_Click(object sender, RoutedEventArgs e)
+        {
+            Event IV = new Event("Given IV", DateTime.Now);
+            SimServices.GiveIV(tempVitals);
+            await App.service.AddEvent(IV, DebId);
+            await App.service.ChangeVitals(tempVitals);
+            bloodpressure.Content = "Blodtrykk: " + tempVitals.BlodPressure();
+            Goals = SimServices.CheckGoals(Goals, tempVitals);
+        }
+        private async void giveblanket_Click(object sender, RoutedEventArgs e)
+        {
+            Event heated = new Event("Warmed up", DateTime.Now);
+            SimServices.GiveBlanket(tempVitals);
+            await App.service.AddEvent(heated, DebId);
+            await App.service.ChangeVitals(tempVitals);
+            temp.Content = "Temperatur: " + tempVitals.Temperature + " C";
+            Goals = SimServices.CheckGoals(Goals, tempVitals);
+        }
+        private async void cooldown_Click(object sender, RoutedEventArgs e)
+        {
+            Event cooled = new Event("Cooled down", DateTime.Now);
+            SimServices.CoolDown(tempVitals);
+            await App.service.AddEvent(cooled, DebId);
+            await App.service.ChangeVitals(tempVitals);
+            temp.Content = "Temperatur: " + tempVitals.Temperature + " C";
+            Goals = SimServices.CheckGoals(Goals, tempVitals);
+        }
+
+        private async void Timer_Tick(object? sender, EventArgs e)
         {
             ElapsedSec++;
 
-            if (ActiveCase.Goals.Count == 0)
+            if (Goals.Count == 0)
             {
                 Event done = new Event("Simulation finished", DateTime.Now);
-                App.service.StopSim(tempVitals.Id, DebId, done);
+                await App.service.StopSim(tempVitals.Id, DebId, done);
+                MessageBox.Show("Simulering ferdig");
             }
             else
             {
 
-                foreach (Goal g in ActiveCase.Goals)
+                foreach (Goal g in Goals)
                 {
                     if (!g.Completed && g.Time < ElapsedSec)
                     {
-                        Event failed = new Event("Goal not achieved in time", DateTime.Now);
-                        App.service.AddEvent(failed, DebId);
+                        Event failed = new Event("FAILED - Goal not achieved in time", DateTime.Now);
+                        await App.service.AddEvent(failed, DebId);
                     }
                 }
             }
