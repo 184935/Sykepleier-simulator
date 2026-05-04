@@ -86,7 +86,7 @@ namespace Rest_API.Controllers
 
         // GET api/<CaseController>/5
         [HttpGet("{id}")]
-        public async Task<IActionResult> Get(int id)
+        public async Task<IActionResult> Get([FromRoute] int id)
         {
             Context.Cases.Load();
             Case? medCase = Context.Cases
@@ -167,8 +167,8 @@ namespace Rest_API.Controllers
         }
 
         // POST api/Case/startsim
-        [HttpPost("startsim")]
-        public async Task<IActionResult> StartSim(int caseId, [FromBody] Event simStart)
+        [HttpPost("startsim/{caseId}")]
+        public async Task<IActionResult> StartSim([FromRoute] int caseId, [FromBody] Event simStart)
         {
             Case? medCase = await Context.Cases
                 .Include(c => c.Vitals)
@@ -197,8 +197,8 @@ namespace Rest_API.Controllers
 
         // POST api/Case/stopsim
 
-        [HttpPost("stopsim")]
-        public async Task<IActionResult> StopSim([FromBody]Vitals tempVital, [FromBody] Event simEnd, int debId)
+        [HttpPost("stopsim/{tempVitalid}/{debId}")]
+        public async Task<IActionResult> StopSim([FromRoute]int tempVitalid, [FromBody]Event simEnd, [FromRoute] int debId)
         {
             Debrief? deb = await Context.Debriefs.
                 Include(d => d.Events)
@@ -207,6 +207,7 @@ namespace Rest_API.Controllers
             {
                 return BadRequest("Debrief doesn't exist");
             }
+            Vitals? tempVital = await Context.Vitals.FindAsync(tempVitalid);
             deb.Events.Add(simEnd);
             Context.Remove(tempVital);
             await Context.SaveChangesAsync();
@@ -215,8 +216,8 @@ namespace Rest_API.Controllers
         }
 
         // POST api/Case/addevent
-        [HttpPost("addevent")]
-        public async Task<IActionResult> AddEvent([FromBody] Event newEvent, int debId)
+        [HttpPost("addevent/{debid}")]
+        public async Task<IActionResult> AddEvent([FromBody] Event newEvent, [FromRoute]int debId)
         {
             Debrief? deb = await Context.Debriefs
                 .Include(d => d.Events)
@@ -232,8 +233,8 @@ namespace Rest_API.Controllers
         }
 
         // POST api/Case/addcomment
-        [HttpPost]
-        public async Task<IActionResult> AddComment([FromBody] Comment newComment, int debId)
+        [HttpPost("addcomment/{debId}")]
+        public async Task<IActionResult> AddComment([FromBody] Comment newComment, [FromRoute]int debId)
         {
             Debrief? deb = await Context.Debriefs
                 .Include(d => d.Comments)

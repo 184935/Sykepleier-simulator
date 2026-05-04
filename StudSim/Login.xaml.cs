@@ -24,12 +24,19 @@ namespace StudSim
             InitializeComponent();
         }
 
-        private async Task Button_Click(object sender, RoutedEventArgs e)
+        private async void Button_Click(object sender, RoutedEventArgs e)
         {
             LoginDTO loginDTO = new LoginDTO(email.Text, password.Password);
 
+            Case? medCase = await App.service.Login(loginDTO);
 
-            
+            if (medCase != null)
+            {
+                test.Content = "success";
+            } else
+            {
+                test.Content = "failure";
+            }
 
         }
     }

@@ -23,7 +23,8 @@ namespace StudSim
 
         private void start_Click(object sender, RoutedEventArgs e)
         {
-
+            Login log = new Login();
+            log.Show();
         }
     }
 }
