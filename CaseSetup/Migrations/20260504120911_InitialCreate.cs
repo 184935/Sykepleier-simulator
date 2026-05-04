@@ -236,11 +236,18 @@ namespace CaseSetup.Migrations
                     Editable = table.Column<bool>(type: "bit", nullable: false),
                     DifficultyInt = table.Column<int>(type: "int", nullable: false),
                     Difficulty = table.Column<int>(type: "int", nullable: false),
-                    User = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    User = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    LabvaluesId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Cases", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Cases_LabValues_LabvaluesId",
+                        column: x => x.LabvaluesId,
+                        principalTable: "LabValues",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Cases_MedHistory_MedicalHistoryId",
                         column: x => x.MedicalHistoryId,
@@ -454,6 +461,11 @@ namespace CaseSetup.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Cases_LabvaluesId",
+                table: "Cases",
+                column: "LabvaluesId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Cases_MedicalHistoryId",
                 table: "Cases",
                 column: "MedicalHistoryId");
@@ -533,9 +545,6 @@ namespace CaseSetup.Migrations
                 name: "Goals");
 
             migrationBuilder.DropTable(
-                name: "LabValues");
-
-            migrationBuilder.DropTable(
                 name: "Medications");
 
             migrationBuilder.DropTable(
@@ -549,6 +558,9 @@ namespace CaseSetup.Migrations
 
             migrationBuilder.DropTable(
                 name: "Cases");
+
+            migrationBuilder.DropTable(
+                name: "LabValues");
 
             migrationBuilder.DropTable(
                 name: "MedHistory");

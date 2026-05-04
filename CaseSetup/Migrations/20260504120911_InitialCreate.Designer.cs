@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CaseSetup.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260503104338_InitialCreate")]
+    [Migration("20260504120911_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -273,6 +273,9 @@ namespace CaseSetup.Migrations
                     b.Property<bool>("Editable")
                         .HasColumnType("bit");
 
+                    b.Property<int>("LabvaluesId")
+                        .HasColumnType("int");
+
                     b.Property<int>("MedicalHistoryId")
                         .HasColumnType("int");
 
@@ -287,6 +290,8 @@ namespace CaseSetup.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("LabvaluesId");
 
                     b.HasIndex("MedicalHistoryId");
 
@@ -653,6 +658,12 @@ namespace CaseSetup.Migrations
 
             modelBuilder.Entity("SharedLibrary.Models.Case", b =>
                 {
+                    b.HasOne("SharedLibrary.Models.LabValues", "LabValues")
+                        .WithMany()
+                        .HasForeignKey("LabvaluesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("SharedLibrary.Models.MedicalHistory", "MedicalHistory")
                         .WithMany()
                         .HasForeignKey("MedicalHistoryId")
@@ -670,6 +681,8 @@ namespace CaseSetup.Migrations
                         .HasForeignKey("VitalsId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("LabValues");
 
                     b.Navigation("MedicalHistory");
 

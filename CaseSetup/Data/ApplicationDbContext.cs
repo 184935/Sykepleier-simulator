@@ -12,16 +12,25 @@ namespace CaseSetup.Data
         public DbSet<SharedLibrary.Models.Case> Cases { get; set; } = default!;
         public DbSet<SharedLibrary.Models.Allergy> Allergies { get; set; } = default!;
         public DbSet<SharedLibrary.Models.Diagnosis> Diagnosis { get; set; } = default!;
-        public DbSet<SharedLibrary.Models.LabValues> LabValues {  get; set; } = default!;
-        public DbSet<SharedLibrary.Models.MedicalHistory> MedHistory {  get; set; } = default!;
-        public DbSet<SharedLibrary.Models.Medication> Medications {  get; set; } = default!;
-        public DbSet<SharedLibrary.Models.Patient> Patients {  get; set; } = default!;
-        public DbSet<SharedLibrary.Models.Vitals> Vitals {  get; set; } = default!;
-        public DbSet<User> Users {  get; set; } = default!;
+        public DbSet<SharedLibrary.Models.LabValues> LabValues { get; set; } = default!;
+        public DbSet<SharedLibrary.Models.MedicalHistory> MedHistory { get; set; } = default!;
+        public DbSet<SharedLibrary.Models.Medication> Medications { get; set; } = default!;
+        public DbSet<SharedLibrary.Models.Patient> Patients { get; set; } = default!;
+        public DbSet<SharedLibrary.Models.Vitals> Vitals { get; set; } = default!;
+        public DbSet<User> Users { get; set; } = default!;
         public DbSet<Goal> Goals { get; set; } = default!;
-        public DbSet<Event> Events {  get; set; } = default!;
-        public DbSet<Comment> Comments {  get; set; } = default!; 
-        public DbSet<Debrief> Debriefs {  get; set; } = default!;
+        public DbSet<Event> Events { get; set; } = default!;
+        public DbSet<Comment> Comments { get; set; } = default!;
+        public DbSet<Debrief> Debriefs { get; set; } = default!;
+
+        public static List<Goal> MakeGoals()
+        {
+            Goal StabUnderP = new Goal("Stabalize underpressure", 80, 60, 5000);
+            Goal StabOverP = new Goal("Stabalize overpressure", 120, 90, 5000);
+            Goal StabTemp = new Goal("Stabalize temperature", 38, 36, 10000);
+            List<Goal> Goals2 = [StabOverP, StabUnderP, StabTemp];
+            return Goals2;
+        }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -135,18 +144,25 @@ namespace CaseSetup.Data
             await context.SaveChangesAsync();
 
             // Cases
-            var case1 = new Case(patient1.Id, vitals1.Id, history1.Id, true, 0);  // Easy - fever
-            var case2 = new Case(patient2.Id, vitals2.Id, history2.Id, false, 1); // Intermediate - high BP
-            var case3 = new Case(patient3.Id, vitals3.Id, history3.Id, false, 2); // Hard - low BP
-            var case4 = new Case(patient4.Id, vitals4.Id, history4.Id, false, 2); // Hard - high BP + hypothermia
-            var case5 = new Case(patient5.Id, vitals5.Id, history5.Id, true, 0);  // Easy - all normal
-            case1.Goals = Goals2;
-            case2.Goals = Goals2;
-            case3.Goals = Goals2;
-            case4.Goals = Goals2;
-            case5.Goals = Goals2;
-            context.Cases.AddRange(case1, case2, case3, case4, case5);
-            await context.SaveChangesAsync();
+            var case1 = new Case(patient1.Id, vitals1.Id, history1.Id, true, 0, labs1.Id);  // Easy - fever
+            var case2 = new Case(patient2.Id, vitals2.Id, history2.Id, false, 1, labs2.Id); // Intermediate - high BP
+            var case3 = new Case(patient3.Id, vitals3.Id, history3.Id, false, 2, labs3.Id); // Hard - low BP
+            var case4 = new Case(patient4.Id, vitals4.Id, history4.Id, false, 2, labs4.Id); // Hard - high BP + hypothermia
+            var case5 = new Case(patient5.Id, vitals5.Id, history5.Id, true, 0, labs5.Id);  // Easy - all normal
+            case1.Goals = MakeGoals();
+            case2.Goals = MakeGoals() ;
+            case3.Goals = MakeGoals();
+            case4.Goals = MakeGoals();
+            case5.Goals = MakeGoals();
+            try
+            {
+                context.Cases.AddRange(case1, case2, case3, case4, case5);
+                await context.SaveChangesAsync();
+            } catch (DbUpdateException ex)
+            {
+                Console.WriteLine(ex.Message);
+                throw;
+            }
 
             // Medications
             var medications = new List<Medication>
@@ -205,5 +221,10 @@ namespace CaseSetup.Data
             context.Diagnosis.AddRange(diagnoses);
             await context.SaveChangesAsync();
         }
+
+
+    
+    
     }
+
 }

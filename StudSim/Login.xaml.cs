@@ -19,6 +19,7 @@ namespace StudSim
     /// </summary>
     public partial class Login : Window
     {
+        public Case? ActiveCase { get; private set; }
         public Login()
         {
             InitializeComponent();
@@ -32,10 +33,11 @@ namespace StudSim
 
             if (medCase != null)
             {
-                test.Content = "success";
+                ActiveCase = medCase;
+                DialogResult = true;
             } else
             {
-                test.Content = "failure";
+                MessageBox.Show("Ugyldig brukernavn eller passord");
             }
 
         }

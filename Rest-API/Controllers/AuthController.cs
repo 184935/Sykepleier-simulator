@@ -47,6 +47,7 @@ namespace Rest_API.Controllers
                 .Include(c => c.Allergies)
                 .Include(c => c.Diagnoses)
                 .Include(c => c.MedicalHistory)
+                .Include(c => c.LabValues)
                 .Where(c => c.User == user.Id)
                 .FirstOrDefaultAsync();
 

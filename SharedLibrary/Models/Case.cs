@@ -22,16 +22,17 @@ namespace SharedLibrary.Models
         public int DifficultyInt { get; set; }
         public virtual Difficulty Difficulty { get; set; }
         public string User {  get; set; }
+        public int LabvaluesId { get; set; }
 
         public virtual Patient Patient { get; set; }
         public virtual Vitals Vitals { get; set; }
         public virtual MedicalHistory MedicalHistory { get; set; }
-
+        public virtual LabValues LabValues { get; set; }
         public List<Goal> Goals {  get; set; }
 
         public Case() { }
 
-        public Case(int patientId, int vitalsId, int medicalHistoryId, bool editable, int difficultyInt)
+        public Case(int patientId, int vitalsId, int medicalHistoryId, bool editable, int difficultyInt, int labvalId)
         {
             PatientId = patientId;
             VitalsId = vitalsId;
@@ -39,6 +40,7 @@ namespace SharedLibrary.Models
             Editable = editable;
             DifficultyInt = difficultyInt;
             User = "";
+            LabvaluesId = labvalId;
         }
     }
 }
