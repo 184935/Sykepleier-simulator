@@ -40,8 +40,12 @@ public class Apiservice
 
     public async Task<Vitals> Vitals(int id)
     {
-        var response = await _client.GetFromJsonAsync<Vitals>($"api/vitals/{id}");
+        var response = await _client.GetFromJsonAsync<Vitals>($"api/Case/vitals/{id}");
         return response;
+    }
+    public async Task<Debrief?> GetDebrief()
+    {
+        return await _client.GetFromJsonAsync<Debrief>("api/Case/lastdebrief");
     }
 
     public async Task<ChecksimDTO?> Checksim()
@@ -51,6 +55,17 @@ public class Apiservice
             return await _client.GetFromJsonAsync<ChecksimDTO>("api/Case/checksim");
         }
         catch (HttpRequestException ex)
+        {
+            return null;
+        }
+    }
+
+    public async Task<List<Event>> GetEvents(int debid)
+    {
+        try
+        {
+            return await _client.GetFromJsonAsync<List<Event>>($"api/Case/events/{debid}");
+        } catch (HttpRequestException ex)
         {
             return null;
         }

@@ -4,9 +4,34 @@
              x:Class="TeacherOverview.Views.DebriefsPage"
              Title="DebriefsPage">
     <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
+        <Grid ColumnDefinitions="*,*">
+            <VerticalStackLayout Grid.Column="0" Padding="5">
+                <Label Text="Events" FontAttributes="Bold"/>
+                <CollectionView x:Name="eventlist">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <VerticalStackLayout Padding="5">
+                                <Label Text="{Binding Timestamp}"/>
+                                <Label Text="{Binding Action}" />
+                            </VerticalStackLayout>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </VerticalStackLayout>
+
+            <VerticalStackLayout Grid.Column="1" Padding="5">
+                <Label Text="Kommentarer" FontAttributes="Bold"/>
+                <CollectionView x:Name="commentlist">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <VerticalStackLayout Padding="5">
+                                <Label Text="{Binding Timestamp}"/>
+                                <Label Text="{Binding Text}"/>
+                            </VerticalStackLayout>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </VerticalStackLayout>
+        </Grid>
     </VerticalStackLayout>
 </ContentPage>

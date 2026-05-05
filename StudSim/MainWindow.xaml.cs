@@ -61,7 +61,7 @@ namespace StudSim
                 sodium.Content = "Natrium: " + ActiveCase.LabValues.Sodium;
                 // Makes the start event and starts the debrief
                 Event startSim = new Event("Simulering startet",DateTime.Now);
-                EventLogg.Add(startSim);
+                EventLogg.Insert(0, startSim);
                 StartsimDTO? startsimDTO = await App.service.StartSim(ActiveCase.Id, startSim);
                 if (startsimDTO != null)
                 {
@@ -90,7 +90,7 @@ namespace StudSim
         private async void givemeds_Click(object sender, RoutedEventArgs e)
         {
             Event meds = new Event("Given medication", DateTime.Now);
-            EventLogg.Add(meds);
+            EventLogg.Insert(0, meds);
             SimServices.GiveMedication(tempVitals);
             await App.service.AddEvent(meds, DebId);
             await App.service.ChangeVitals(tempVitals);
@@ -100,14 +100,14 @@ namespace StudSim
             if (!AllergiesChecked)
             {
                 Event fail = new Event("FAILED - Did not check allergies", DateTime.Now);
-                EventLogg.Add(fail);
+                EventLogg.Insert(0, fail);
                 await App.service.AddEvent(fail, DebId);
             }
         }
         private async void giveiv_Click(object sender, RoutedEventArgs e)
         {
             Event IV = new Event("Given IV", DateTime.Now);
-            EventLogg.Add(IV);
+            EventLogg.Insert(0, IV);
             SimServices.GiveIV(tempVitals);
             await App.service.AddEvent(IV, DebId);
             await App.service.ChangeVitals(tempVitals);
@@ -117,7 +117,7 @@ namespace StudSim
         private async void giveblanket_Click(object sender, RoutedEventArgs e)
         {
             Event heated = new Event("Warmed up", DateTime.Now);
-            EventLogg.Add(heated);
+            EventLogg.Insert(0, heated);
             SimServices.GiveBlanket(tempVitals);
             await App.service.AddEvent(heated, DebId);
             await App.service.ChangeVitals(tempVitals);
@@ -127,7 +127,7 @@ namespace StudSim
         private async void cooldown_Click(object sender, RoutedEventArgs e)
         {
             Event cooled = new Event("Cooled down", DateTime.Now);
-            EventLogg.Add(cooled);
+            EventLogg.Insert(0, cooled);
             SimServices.CoolDown(tempVitals);
             await App.service.AddEvent(cooled, DebId);
             await App.service.ChangeVitals(tempVitals);
@@ -143,7 +143,7 @@ namespace StudSim
             {
                 timer.Stop();
                 Event done = new Event("Simulation finished", DateTime.Now);
-                EventLogg.Add(done);
+                EventLogg.Insert(0, done);
                 await App.service.StopSim(tempVitals.Id, DebId, done);
                 MessageBox.Show("Simulering ferdig");
                 
@@ -156,7 +156,7 @@ namespace StudSim
                     if (!g.Completed && g.Time < ElapsedSec)
                     {
                         Event failed = new Event("FAILED - Goal not achieved in time", DateTime.Now);
-                        EventLogg.Add(failed);
+                        EventLogg.Insert(0, failed);
                         await App.service.AddEvent(failed, DebId);
                     }
                 }

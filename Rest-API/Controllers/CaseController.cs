@@ -3,6 +3,7 @@ using CaseSetup.Data;
 using SharedLibrary.Models;
 using Microsoft.EntityFrameworkCore;
 using CaseSetup.Areas.Identity.Data;
+using System.Collections.ObjectModel;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -57,6 +58,7 @@ namespace Rest_API.Controllers
         {
             return new string[] { "value1", "value2" };
         }
+
 
 
         // PATCH api/<CaseController>
@@ -134,6 +136,7 @@ namespace Rest_API.Controllers
         {
             Debrief? aktiv = await Context.Debriefs
                 .Include(d => d.Events)
+                .OrderBy(c => c.Timestamp)
                 .LastOrDefaultAsync();
             if (aktiv == null || aktiv.Events.Last().Action.Equals("Simulation finished"))
             {
@@ -145,10 +148,11 @@ namespace Rest_API.Controllers
                 .Include(c => c.MedicalHistory)
                 .Include(c => c.Medications)
                 .FirstOrDefaultAsync();
-            Vitals? tempVitals = await Context.Vitals.LastAsync();
+            Vitals? tempVitals = await Context.Vitals
+                .OrderByDescending(v => v.Id)
+                .LastAsync();
 
-            return Ok(new
-            {
+            return Ok(new ChecksimDTO {
                 Vitals = tempVitals,
                 Case = medCase,
                 DebriefId = aktiv.Id
@@ -252,6 +256,28 @@ namespace Rest_API.Controllers
 
         }
 
+        // GET api/Case/debriefs/<id>
+        [HttpGet("lastdebrief")]
+        public async Task<Debrief?> GetDebrief()
+        {
+            return await Context.Debriefs
+                .Include(d => d.Events)
+                .Include(d => d.Comments)
+                .OrderBy(d => d.Timestamp)
+                .LastOrDefaultAsync();
+        }
+
+        // GET api/Case/events/<id>
+        [HttpGet("events/{id}")]
+        public async Task<List<Event>> GetEvents([FromRoute] int id)
+        {
+            Debrief? deb = await Context.Debriefs
+                .Include(d => d.Events)
+                .Where(d => d.Id == id)
+                .FirstOrDefaultAsync();
+            return deb.Events;
+            
+        }
 
         // PUT api/<CaseController>/5
         [HttpPut("{id}")]
