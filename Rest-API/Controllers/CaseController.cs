@@ -228,6 +228,7 @@ namespace Rest_API.Controllers
         {
             Debrief? deb = await Context.Debriefs
                 .Include(d => d.Events)
+                .Where(d => d.Id == debId)
                 .FirstOrDefaultAsync();
             if (deb == null)
             {
@@ -245,6 +246,7 @@ namespace Rest_API.Controllers
         {
             Debrief? deb = await Context.Debriefs
                 .Include(d => d.Comments)
+                .Where(d => d.Id == debId)
                 .FirstOrDefaultAsync();
             if (deb == null)
             {
