@@ -6,4 +6,7 @@
   <Project Path="Rest-API/Rest-API.csproj" Id="93322f91-6649-4630-bbbe-4e21184f7037" />
   <Project Path="SharedLibrary/SharedLibrary.csproj" Id="21f04ea6-7301-4a17-879c-8ec3fdb87141" />
   <Project Path="StudSim/StudSim.csproj" />
+  <Project Path="TeacherOverview/TeacherOverview.csproj" Id="7fcfaebb-709a-4365-801d-5b55859a4638">
+    <Deploy Solution="Debug|*" />
+  </Project>
 </Solution>
